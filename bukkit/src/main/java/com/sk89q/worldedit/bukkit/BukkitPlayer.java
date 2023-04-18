@@ -34,10 +34,12 @@ import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.extent.inventory.BlockBag;
 import com.sk89q.worldedit.internal.cui.CUIEvent;
 import com.sk89q.worldedit.session.SessionKey;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nullable;
+
 import org.bukkit.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -55,6 +57,10 @@ public class BukkitPlayer extends LocalPlayer {
     public BukkitPlayer(WorldEditPlugin plugin, ServerInterface server, Player player) {
         this.plugin = plugin;
         this.player = player;
+    }
+
+    public static Class<BukkitPlayer> inject() {
+        return BukkitPlayer.class;
     }
 
     @Override
@@ -309,9 +315,5 @@ public class BukkitPlayer extends LocalPlayer {
             return true;
         }
 
-    }
-
-    public static Class<BukkitPlayer> inject() {
-        return BukkitPlayer.class;
     }
 }

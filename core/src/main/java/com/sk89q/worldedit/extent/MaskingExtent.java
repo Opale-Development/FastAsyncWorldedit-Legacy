@@ -50,6 +50,10 @@ public class MaskingExtent extends AbstractDelegateExtent {
         this.mask = mask;
     }
 
+    public static Class<?> inject() {
+        return MaskingExtent.class;
+    }
+
     /**
      * Get the mask.
      *
@@ -82,10 +86,6 @@ public class MaskingExtent extends AbstractDelegateExtent {
     @Override
     public boolean setBiome(int x, int y, int z, BaseBiome biome) {
         return mask.test(mutable.setComponents(x, y, z)) && super.setBiome(x, y, z, biome);
-    }
-
-    public static Class<?> inject() {
-        return MaskingExtent.class;
     }
 
 }

@@ -52,6 +52,10 @@ public class ToolCommands {
         this.we = we;
     }
 
+    public static Class<?> inject() {
+        return ToolCommands.class;
+    }
+
     @Command(
             aliases = {"info", "/info"},
             usage = "",
@@ -181,9 +185,5 @@ public class ToolCommands {
         session.setTool(new LongRangeBuildTool(primary, secondary), player);
         BBC.TOOL_LRBUILD_BOUND.send(player, ItemType.toHeldName(player.getItemInHand()));
         BBC.TOOL_LRBUILD_INFO.send(player, ItemType.toName(secondary.getType()), ItemType.toName(primary.getType()));
-    }
-
-    public static Class<?> inject() {
-        return ToolCommands.class;
     }
 }

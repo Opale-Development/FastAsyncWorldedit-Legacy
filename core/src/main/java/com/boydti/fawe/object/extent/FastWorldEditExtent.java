@@ -21,14 +21,15 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.util.List;
 import java.util.Map;
 
 public class FastWorldEditExtent extends AbstractDelegateExtent implements HasFaweQueue {
 
     private final World world;
-    private FaweQueue queue;
     private final int maxY;
+    private FaweQueue queue;
 
     public FastWorldEditExtent(final World world, FaweQueue queue) {
         super(queue);

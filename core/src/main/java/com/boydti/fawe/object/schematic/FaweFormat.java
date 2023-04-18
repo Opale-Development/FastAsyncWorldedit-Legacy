@@ -31,6 +31,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.world.registry.WorldData;
 import com.sk89q.worldedit.world.storage.NBTConversions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -45,6 +46,7 @@ public class FaweFormat implements ClipboardReader, ClipboardWriter {
     private FaweInputStream in;
     private FaweOutputStream out;
     private int mode;
+    private boolean compressed = false;
 
     public FaweFormat(FaweInputStream in) {
         this.in = in;
@@ -53,8 +55,6 @@ public class FaweFormat implements ClipboardReader, ClipboardWriter {
     public FaweFormat(FaweOutputStream out) {
         this.out = out;
     }
-
-    private boolean compressed = false;
 
     public boolean compress(int i) throws IOException {
         if (compressed) {

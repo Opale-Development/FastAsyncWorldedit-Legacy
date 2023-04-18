@@ -39,6 +39,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.registry.BundledBlockData;
+
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,8 +56,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BlockArrayClipboard implements Clipboard, LightingExtent, Closeable {
 
-    private Region region;
     public FaweClipboard IMP;
+    private Region region;
     private Vector size;
     private int mx;
     private int my;
@@ -102,6 +103,10 @@ public class BlockArrayClipboard implements Clipboard, LightingExtent, Closeable
         this.my = origin.getBlockY();
         this.mz = origin.getBlockZ();
         this.IMP = clipboard;
+    }
+
+    public static Class<?> inject() {
+        return BlockArrayClipboard.class;
     }
 
     public void init(Region region, FaweClipboard fc) {
@@ -243,10 +248,6 @@ public class BlockArrayClipboard implements Clipboard, LightingExtent, Closeable
     @Override
     public Operation commit() {
         return null;
-    }
-
-    public static Class<?> inject() {
-        return BlockArrayClipboard.class;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.boydti.fawe.Fawe;
 import com.boydti.fawe.object.collection.SoftHashMap;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.world.registry.WorldData;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -51,7 +52,8 @@ public class WavefrontReader implements ClipboardReader {
         for (; index < len; index++) {
             char c = s.charAt(index);
             switch (c) {
-                case ' ': break outer;
+                case ' ':
+                    break outer;
                 case '0':
                 case '1':
                 case '2':
@@ -69,7 +71,8 @@ public class WavefrontReader implements ClipboardReader {
                     for (; index < len; index++) {
                         c = s.charAt(index);
                         switch (c) {
-                            case ' ': break outer;
+                            case ' ':
+                                break outer;
                             case '0':
                             case '1':
                             case '2':
@@ -125,12 +128,6 @@ public class WavefrontReader implements ClipboardReader {
     private String getFileName(String arg) {
         String[] pathSplit = arg.split("[/|\\\\]");
         return pathSplit[pathSplit.length - 1];
-    }
-
-    private class Material {
-        private double dissolve = 1;
-        private int color = Integer.MIN_VALUE;
-        private String texture;
     }
 
     private final void loadMaterials(String fileName) throws IOException {
@@ -219,7 +216,8 @@ public class WavefrontReader implements ClipboardReader {
                 if (line.isEmpty()) continue;
                 char char0 = line.charAt(0);
                 switch (char0) {
-                    case '#': continue;
+                    case '#':
+                        continue;
                     case 'v':
                         switch (line.charAt(1)) {
                             case ' ':
@@ -547,6 +545,12 @@ public class WavefrontReader implements ClipboardReader {
 //        VLogger.log("[IMPORT] Import complete, loaded " + f.size() + " faces");
 //        VLogger.log("[IMPORT] Import complete, created " + colormap.size() + " voxels");
 //        return new VoxelBox(colormap);
+    }
+
+    private class Material {
+        private double dissolve = 1;
+        private int color = Integer.MIN_VALUE;
+        private String texture;
     }
 
 

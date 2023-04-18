@@ -18,6 +18,7 @@ import com.sk89q.worldedit.function.mask.MaskIntersection;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.interpolation.Node;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,11 +28,10 @@ import java.util.List;
 public class SplineBrush implements Brush, ResettableTool {
 
     public static int MAX_POINTS = 15;
-    private ArrayList<ArrayList<Vector>> positionSets;
-    private int numSplines;
-
     private final LocalSession session;
     private final Player player;
+    private ArrayList<ArrayList<Vector>> positionSets;
+    private int numSplines;
     private Vector position;
 
     public SplineBrush(Player player, LocalSession session) {

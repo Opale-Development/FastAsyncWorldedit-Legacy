@@ -7,6 +7,7 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.extent.Extent;
+
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -31,6 +32,10 @@ public class RandomPattern extends AbstractPattern {
 
     public RandomPattern(SimpleRandom random) {
         this.random = random;
+    }
+
+    public static Class<?> inject() {
+        return RandomPattern.class;
     }
 
     /**
@@ -67,10 +72,6 @@ public class RandomPattern extends AbstractPattern {
     @Override
     public boolean apply(Extent extent, Vector set, Vector get) throws WorldEditException {
         return collection.next(get.getBlockX(), get.getBlockY(), get.getBlockZ()).apply(extent, set, get);
-    }
-
-    public static Class<?> inject() {
-        return RandomPattern.class;
     }
 
 }

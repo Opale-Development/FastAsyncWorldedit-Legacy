@@ -5,6 +5,7 @@ import com.intellectualcrafters.plot.object.Location;
 import com.intellectualcrafters.plot.object.Plot;
 import com.intellectualcrafters.plot.object.PlotArea;
 import com.sk89q.worldedit.BlockVector2D;
+
 import java.util.ArrayList;
 
 
@@ -17,6 +18,7 @@ public class PlotRegionFilter extends CuboidRegionFilter {
         checkNotNull(area);
         this.area = area;
     }
+
     @Override
     public void calculateRegions() {
         ArrayList<Plot> plots = new ArrayList<>(area.getPlots());

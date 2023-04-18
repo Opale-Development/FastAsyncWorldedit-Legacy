@@ -20,6 +20,7 @@
 package com.sk89q.worldedit.function.mask;
 
 import com.sk89q.worldedit.Vector;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,6 +51,10 @@ public class MaskUnion extends MaskIntersection {
         super(mask);
     }
 
+    public static Class<MaskUnion> inject() {
+        return MaskUnion.class;
+    }
+
     @Override
     public boolean test(Vector vector) {
         for (Mask mask : getMasksArray()) {
@@ -74,9 +79,5 @@ public class MaskUnion extends MaskIntersection {
             }
         }
         return new MaskUnion2D(mask2dList);
-    }
-
-    public static Class<MaskUnion> inject() {
-        return MaskUnion.class;
     }
 }

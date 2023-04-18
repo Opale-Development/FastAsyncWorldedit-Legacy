@@ -54,6 +54,7 @@ import com.sk89q.worldedit.session.request.Request;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.World;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -83,11 +84,11 @@ public class PlatformManager {
     private final CommandManager commandManager;
     private final List<Platform> platforms = new ArrayList<Platform>();
     private final Map<Capability, Platform> preferences = new EnumMap<Capability, Platform>(Capability.class);
+    private final AtomicBoolean initialized = new AtomicBoolean();
+    private final AtomicBoolean configured = new AtomicBoolean();
     private
     @Nullable
     String firstSeenVersion;
-    private final AtomicBoolean initialized = new AtomicBoolean();
-    private final AtomicBoolean configured = new AtomicBoolean();
 
     /**
      * Create a new platform manager.
@@ -101,6 +102,10 @@ public class PlatformManager {
 
         // Register this instance for events
         worldEdit.getEventBus().register(this);
+    }
+
+    public static Class<?> inject() {
+        return PlatformManager.class;
     }
 
     /**
@@ -473,7 +478,7 @@ public class PlatformManager {
 
         VirtualWorld virtual = session.getVirtualWorld();
         if (virtual != null) {
-            virtual.handlePlayerInput(player,  event);
+            virtual.handlePlayerInput(player, event);
             if (event.isCancelled()) return;
         }
 
@@ -563,10 +568,6 @@ public class PlatformManager {
                 MainUtil.handleError(e);
             }
         }
-    }
-
-    public static Class<?> inject() {
-        return PlatformManager.class;
     }
 
 }

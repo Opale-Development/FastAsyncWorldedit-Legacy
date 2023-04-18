@@ -53,13 +53,13 @@ public class BlockReplace implements RegionFunction {
         this(extent, (Pattern) pattern);
     }
 
+    public static Class<?> inject() {
+        return BlockReplace.class;
+    }
+
     @Override
     public boolean apply(Vector position) throws WorldEditException {
         return pattern.apply(extent, position, position);
-    }
-
-    public static Class<?> inject() {
-        return BlockReplace.class;
     }
 
 }

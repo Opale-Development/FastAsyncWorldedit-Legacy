@@ -5,6 +5,7 @@ import com.boydti.fawe.config.Settings;
 import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.wrappers.WorldWrapper;
 import com.sk89q.worldedit.world.World;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,56 +22,22 @@ public class SetQueue {
      * The implementation specific queue
      */
     public static final SetQueue IMP = new SetQueue();
-    private double targetTPS = 18;
-
-    public enum QueueStage {
-        INACTIVE, ACTIVE, NONE;
-    }
-
     private final ConcurrentLinkedDeque<FaweQueue> activeQueues;
     private final ConcurrentLinkedDeque<FaweQueue> inactiveQueues;
     private final ConcurrentLinkedDeque<Runnable> tasks;
-
+    /**
+     * A queue of tasks that will run when the queue is empty
+     */
+    private final ConcurrentLinkedDeque<Runnable> emptyTasks = new ConcurrentLinkedDeque<>();
+    private double targetTPS = 18;
     /**
      * Used to calculate elapsed time in milliseconds and ensure block placement doesn't lag the server
      */
     private long last;
     private long allocate = 50;
     private long lastSuccess;
-
-    /**
-     * A queue of tasks that will run when the queue is empty
-     */
-    private final ConcurrentLinkedDeque<Runnable> emptyTasks = new ConcurrentLinkedDeque<>();
-
     private ForkJoinPool pool = new ForkJoinPool();
     private ExecutorCompletionService completer = new ExecutorCompletionService(pool);
-
-    /**
-     * @return ForkJoinPool
-     * @see TaskManager#getPublicForkJoinPool()
-     */
-    @Deprecated
-    public ExecutorCompletionService getCompleterService() {
-        return completer;
-    }
-
-    @Deprecated
-    public ForkJoinPool getForkJoinPool() {
-        return pool;
-    }
-
-    public void runMiscTasks() {
-        while (Fawe.get().getTimer().isAbove(targetTPS)) {
-            Runnable task = tasks.poll();
-            if (task != null) {
-                task.run();
-            } else {
-                break;
-            }
-        }
-    }
-
     public SetQueue() {
         tasks = new ConcurrentLinkedDeque<>();
         activeQueues = new ConcurrentLinkedDeque();
@@ -189,6 +156,31 @@ public class SetQueue {
                 }
             }
         }, 1);
+    }
+
+    /**
+     * @return ForkJoinPool
+     * @see TaskManager#getPublicForkJoinPool()
+     */
+    @Deprecated
+    public ExecutorCompletionService getCompleterService() {
+        return completer;
+    }
+
+    @Deprecated
+    public ForkJoinPool getForkJoinPool() {
+        return pool;
+    }
+
+    public void runMiscTasks() {
+        while (Fawe.get().getTimer().isAbove(targetTPS)) {
+            Runnable task = tasks.poll();
+            if (task != null) {
+                task.run();
+            } else {
+                break;
+            }
+        }
     }
 
     public QueueStage getStage(FaweQueue queue) {
@@ -446,5 +438,9 @@ public class SetQueue {
             runnable.run();
         }
         return true;
+    }
+
+    public enum QueueStage {
+        INACTIVE, ACTIVE, NONE;
     }
 }

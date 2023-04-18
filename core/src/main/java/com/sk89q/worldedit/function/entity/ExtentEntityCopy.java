@@ -37,6 +37,7 @@ import com.sk89q.worldedit.math.transform.Transform;
 import com.sk89q.worldedit.util.Direction;
 import com.sk89q.worldedit.util.Direction.Flag;
 import com.sk89q.worldedit.util.Location;
+
 import java.util.Arrays;
 import java.util.Map;
 
@@ -72,6 +73,10 @@ public class ExtentEntityCopy implements EntityFunction {
         this.from = from;
         this.to = to;
         this.transform = transform;
+    }
+
+    public static Class<?> inject() {
+        return ExtentEntityCopy.class;
     }
 
     /**
@@ -201,10 +206,6 @@ public class ExtentEntityCopy implements EntityFunction {
         }
 
         return state;
-    }
-
-    public static Class<?> inject() {
-        return ExtentEntityCopy.class;
     }
 
 }

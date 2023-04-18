@@ -37,6 +37,7 @@ import com.sk89q.worldedit.internal.cui.CUIEvent;
 import com.sk89q.worldedit.util.TargetBlock;
 import com.sk89q.worldedit.util.auth.AuthorizationException;
 import com.sk89q.worldedit.world.World;
+
 import java.io.File;
 
 /**
@@ -45,11 +46,6 @@ import java.io.File;
  * players that make use of WorldEdit.
  */
 public abstract class AbstractPlayerActor implements Actor, Player, Cloneable {
-
-    @Override
-    public final Extent getExtent() {
-        return getWorld();
-    }
 
     /**
      * Returns direction according to rotation. May return null.
@@ -79,6 +75,15 @@ public abstract class AbstractPlayerActor implements Actor, Player, Cloneable {
         } else {
             return null;
         }
+    }
+
+    public static Class inject() {
+        return AbstractPlayerActor.class;
+    }
+
+    @Override
+    public final Extent getExtent() {
+        return getWorld();
     }
 
     @Override
@@ -482,9 +487,5 @@ public abstract class AbstractPlayerActor implements Actor, Player, Cloneable {
     @Override
     public boolean remove() {
         return false;
-    }
-
-    public static Class inject() {
-        return AbstractPlayerActor.class;
     }
 }

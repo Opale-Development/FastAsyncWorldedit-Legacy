@@ -36,6 +36,7 @@ import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.regions.polyhedron.Triangle;
 import com.sk89q.worldedit.regions.selector.limit.SelectorLimits;
 import com.sk89q.worldedit.world.World;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -109,6 +110,10 @@ public class ConvexPolyhedralRegionSelector extends com.sk89q.worldedit.regions.
 
             learnChanges();
         }
+    }
+
+    public static Class<?> inject() {
+        return ConvexPolyhedralRegionSelector.class;
     }
 
     @Nullable
@@ -191,12 +196,11 @@ public class ConvexPolyhedralRegionSelector extends com.sk89q.worldedit.regions.
     public List<String> getInformationLines() {
         List<String> ret = new ArrayList<String>();
 
-        ret.add("Vertices: "+region.getVertices().size());
-        ret.add("Triangles: "+region.getTriangles().size());
+        ret.add("Vertices: " + region.getVertices().size());
+        ret.add("Triangles: " + region.getTriangles().size());
 
         return ret;
     }
-
 
     @Override
     public void explainPrimarySelection(Actor player, LocalSession session, Vector pos) {
@@ -275,9 +279,5 @@ public class ConvexPolyhedralRegionSelector extends com.sk89q.worldedit.regions.
             session.dispatchCUIEvent(player, new SelectionPointEvent(0, region.getMinimumPoint(), getArea()));
             session.dispatchCUIEvent(player, new SelectionPointEvent(1, region.getMaximumPoint(), getArea()));
         }
-    }
-
-    public static Class<?> inject() {
-        return ConvexPolyhedralRegionSelector.class;
     }
 }

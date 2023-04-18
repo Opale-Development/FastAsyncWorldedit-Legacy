@@ -49,6 +49,10 @@ public class BukkitPlayerBlockBag extends BlockBag implements SlottableBlockBag 
         this.player = player;
     }
 
+    public static Class<?> inject() {
+        return BukkitPlayerBlockBag.class;
+    }
+
     /**
      * Loads inventory on first use.
      */
@@ -119,13 +123,12 @@ public class BukkitPlayerBlockBag extends BlockBag implements SlottableBlockBag 
         return bukkitItem;
     }
 
-
     @Override
     public void fetchItem(BaseItem item) throws BlockBagException {
         final int id = item.getType();
         final int damage = item.getData();
         int amount = (item instanceof BaseItemStack) ? ((BaseItemStack) item).getAmount() : 1;
-        assert(amount == 1);
+        assert (amount == 1);
         boolean usesDamageValue = ItemType.usesDamageValue(id);
 
         if (id == BlockID.AIR) {
@@ -181,7 +184,7 @@ public class BukkitPlayerBlockBag extends BlockBag implements SlottableBlockBag 
         final int id = item.getType();
         final int damage = item.getData();
         int amount = (item instanceof BaseItemStack) ? ((BaseItemStack) item).getAmount() : 1;
-        assert(amount <= 64);
+        assert (amount <= 64);
         boolean usesDamageValue = ItemType.usesDamageValue(id);
 
         if (id == BlockID.AIR) {
@@ -257,9 +260,5 @@ public class BukkitPlayerBlockBag extends BlockBag implements SlottableBlockBag 
 
     @Override
     public void addSingleSourcePosition(WorldVector pos) {
-    }
-
-    public static Class<?> inject() {
-        return BukkitPlayerBlockBag.class;
     }
 }

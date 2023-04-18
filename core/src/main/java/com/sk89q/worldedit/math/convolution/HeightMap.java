@@ -11,6 +11,7 @@ import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.Regions;
+
 import java.util.Iterator;
 
 
@@ -124,6 +125,10 @@ public class HeightMap {
         this.data = data;
 
         this.layers = layers;
+    }
+
+    public static Class<?> inject() {
+        return HeightMap.class;
     }
 
     /**
@@ -305,10 +310,6 @@ public class HeightMap {
             }
         }
         return blocksChanged;
-    }
-
-    public static Class<?> inject() {
-        return HeightMap.class;
     }
 
 }

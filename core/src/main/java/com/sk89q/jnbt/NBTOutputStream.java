@@ -20,6 +20,7 @@
 package com.sk89q.jnbt;
 
 import com.boydti.fawe.object.io.LittleEndianOutputStream;
+
 import java.io.Closeable;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
@@ -60,6 +61,10 @@ public final class NBTOutputStream implements Closeable {
 
     public NBTOutputStream(DataOutput os) throws IOException {
         this.os = os;
+    }
+
+    public static Class<?> inject() {
+        return NBTOutputStream.class;
     }
 
     public DataOutput getOutputStream() {
@@ -169,10 +174,6 @@ public final class NBTOutputStream implements Closeable {
         os.write(nameBytes);
         next.write(this);
         os.writeByte(NBTConstants.TYPE_END);
-    }
-
-    public interface LazyWrite {
-        void write(NBTOutputStream out) throws IOException;
     }
 
     public void writeTag(Tag tag) throws IOException {
@@ -388,7 +389,7 @@ public final class NBTOutputStream implements Closeable {
         if (os instanceof Flushable) ((Flushable) os).flush();
     }
 
-    public static Class<?> inject() {
-        return NBTOutputStream.class;
+    public interface LazyWrite {
+        void write(NBTOutputStream out) throws IOException;
     }
 }

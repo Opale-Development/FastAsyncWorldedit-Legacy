@@ -17,6 +17,7 @@ import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.util.Direction;
 import com.sk89q.worldedit.util.TreeGenerator;
+
 import javax.annotation.Nullable;
 
 public interface SimpleWorld extends World {

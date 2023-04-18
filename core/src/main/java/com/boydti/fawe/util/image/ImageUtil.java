@@ -5,6 +5,7 @@ import com.boydti.fawe.util.MainUtil;
 import com.boydti.fawe.util.MathMan;
 import com.boydti.fawe.util.StringMan;
 import com.sk89q.worldedit.util.command.parametric.ParameterException;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
@@ -30,8 +31,7 @@ public class ImageUtil {
                                                   int targetWidth,
                                                   int targetHeight,
                                                   Object hint,
-                                                  boolean higherQuality)
-    {
+                                                  boolean higherQuality) {
         if (img.getHeight() == targetHeight && img.getWidth() == targetWidth) {
             return img;
         }

@@ -36,6 +36,14 @@ import com.sk89q.worldedit.regions.Region;
 public abstract class ArbitraryShape {
 
     public final Region extent;
+    /**
+     * Cache entries:
+     * 0 = unknown
+     * -1 = outside
+     * -2 = inside but type and data 0
+     * > 0 = inside, value = (type | (data << 8)), not handling data < 0
+     */
+    private final short[] cache;
     private int cacheOffsetX;
     private int cacheOffsetY;
     private int cacheOffsetZ;
@@ -61,19 +69,13 @@ public abstract class ArbitraryShape {
         cache = new short[cacheSizeX * cacheSizeY * cacheSizeZ];
     }
 
+    public static Class<?> inject() {
+        return ArbitraryShape.class;
+    }
+
     public Region getExtent() {
         return extent;
     }
-
-
-    /**
-     * Cache entries:
-     * 0 = unknown
-     * -1 = outside
-     * -2 = inside but type and data 0
-     * > 0 = inside, value = (type | (data << 8)), not handling data < 0
-     */
-    private final short[] cache;
 
     /**
      * Override this function to specify the shape to generate.
@@ -213,9 +215,5 @@ public abstract class ArbitraryShape {
         }
 
         return affected;
-    }
-
-    public static Class<?> inject() {
-        return ArbitraryShape.class;
     }
 }

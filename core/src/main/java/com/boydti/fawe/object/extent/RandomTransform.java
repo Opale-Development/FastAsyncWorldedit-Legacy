@@ -6,6 +6,7 @@ import com.boydti.fawe.object.random.TrueRandom;
 import com.sk89q.worldedit.extent.AbstractDelegateExtent;
 import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
+
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -29,6 +30,14 @@ public class RandomTransform extends SelectTransform {
         this(new TrueRandom());
     }
 
+    public RandomTransform(SimpleRandom random) {
+        this.random = random;
+    }
+
+    public static Class<?> inject() {
+        return RandomPattern.class;
+    }
+
     @Override
     public AbstractDelegateExtent getExtent(int x, int y, int z) {
         return collection.next(x, y, z);
@@ -37,10 +46,6 @@ public class RandomTransform extends SelectTransform {
     @Override
     public AbstractDelegateExtent getExtent(int x, int z) {
         return collection.next(x, 0, z);
-    }
-
-    public RandomTransform(SimpleRandom random) {
-        this.random = random;
     }
 
     @Override
@@ -79,10 +84,6 @@ public class RandomTransform extends SelectTransform {
 
     public RandomCollection<ResettableExtent> getCollection() {
         return collection;
-    }
-
-    public static Class<?> inject() {
-        return RandomPattern.class;
     }
 
 }

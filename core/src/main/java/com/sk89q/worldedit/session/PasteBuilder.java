@@ -72,6 +72,10 @@ public class PasteBuilder {
         this.targetWorldData = targetWorldData;
     }
 
+    public static Class<?> inject() {
+        return PasteBuilder.class;
+    }
+
     /**
      * Set the target location.
      *
@@ -137,9 +141,5 @@ public class PasteBuilder {
             copy.setSourceMask(new ExistingBlockMask(clipboard));
         }
         return copy;
-    }
-
-    public static Class<?> inject() {
-        return PasteBuilder.class;
     }
 }

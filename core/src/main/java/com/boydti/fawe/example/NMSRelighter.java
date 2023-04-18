@@ -10,6 +10,7 @@ import com.boydti.fawe.object.collection.BlockVectorSet;
 import com.boydti.fawe.util.MathMan;
 import com.boydti.fawe.util.TaskManager;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,23 +25,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NMSRelighter implements Relighter {
+    private static final int DISPATCH_SIZE = 64;
+    public final IntegerTrio mutableBlockPos = new IntegerTrio();
     private final NMSMappedFaweQueue queue;
-
     private final Map<Long, RelightSkyEntry> skyToRelight;
     private final Object present = new Object();
     private final Map<Long, Integer> chunksToSend;
     private final ConcurrentLinkedQueue<RelightSkyEntry> queuedSkyToRelight = new ConcurrentLinkedQueue<>();
-
-    private final Map<Long, long[][][] /* z y x */ > lightQueue;
+    private final Map<Long, long[][][] /* z y x */> lightQueue;
     private final AtomicBoolean lightLock = new AtomicBoolean(false);
     private final ConcurrentHashMap<Long, long[][][]> concurrentLightQueue;
-
     private final int maxY;
     private volatile boolean relighting = false;
-
-    public final IntegerTrio mutableBlockPos = new IntegerTrio();
-
-    private static final int DISPATCH_SIZE = 64;
     private boolean removeFirst;
 
     public NMSRelighter(NMSMappedFaweQueue queue) {
@@ -302,7 +298,7 @@ public class NMSRelighter implements Relighter {
 
     public void fixBlockLighting() {
         synchronized (lightQueue) {
-            while (!lightLock.compareAndSet(false, true));
+            while (!lightLock.compareAndSet(false, true)) ;
             try {
                 updateBlockLight(this.lightQueue);
             } finally {

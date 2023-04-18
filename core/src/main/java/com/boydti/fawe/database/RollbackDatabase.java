@@ -11,6 +11,7 @@ import com.boydti.fawe.util.MainUtil;
 import com.boydti.fawe.util.TaskManager;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.world.World;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,8 +30,8 @@ public class RollbackDatabase extends AsyncNotifyQueue {
     private final File dbLocation;
     private final String worldName;
     private final World world;
+    private final ConcurrentLinkedQueue<Runnable> tasks = new ConcurrentLinkedQueue<>();
     private Connection connection;
-
     private String INSERT_EDIT;
     private String CREATE_TABLE;
     //    private String GET_EDITS_POINT;
@@ -41,9 +42,7 @@ public class RollbackDatabase extends AsyncNotifyQueue {
     private String DELETE_EDITS_USER;
     private String DELETE_EDIT_USER;
     private String PURGE;
-
     private ConcurrentLinkedQueue<RollbackOptimizedHistory> historyChanges = new ConcurrentLinkedQueue<>();
-    private final ConcurrentLinkedQueue<Runnable> tasks = new ConcurrentLinkedQueue<>();
 
     public RollbackDatabase(String world) throws SQLException, ClassNotFoundException {
         this(FaweAPI.getWorld(world));

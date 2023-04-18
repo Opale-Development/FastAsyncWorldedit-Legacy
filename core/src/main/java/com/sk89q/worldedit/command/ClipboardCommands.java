@@ -64,6 +64,7 @@ import com.sk89q.worldedit.regions.selector.CuboidRegionSelector;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.util.command.binding.Switch;
 import com.sk89q.worldedit.util.command.parametric.Optional;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -95,6 +96,9 @@ public class ClipboardCommands extends MethodCommands {
         super(worldEdit);
     }
 
+    public static Class<?> inject() {
+        return ClipboardCommands.class;
+    }
 
     @Command(
             aliases = {"/lazycopy"},
@@ -133,7 +137,6 @@ public class ClipboardCommands extends MethodCommands {
         if (!FawePlayer.wrap(player).hasPermission("fawe.tips"))
             BBC.TIP_PASTE.or(BBC.TIP_LAZYCOPY, BBC.TIP_DOWNLOAD, BBC.TIP_ROTATE, BBC.TIP_COPYPASTE, BBC.TIP_REPLACE_MARKER, BBC.TIP_COPY_PATTERN).send(player);
     }
-
 
     @Command(
             aliases = {"/copy", "/c"},
@@ -318,7 +321,8 @@ public class ClipboardCommands extends MethodCommands {
                     try (ZipOutputStream zos = new ZipOutputStream(out)) {
                         for (File file : files) {
                             String fileName = file.getName();
-                            if (MainUtil.isInSubDirectory(working, file)) fileName = working.toURI().relativize(file.toURI()).getPath();
+                            if (MainUtil.isInSubDirectory(working, file))
+                                fileName = working.toURI().relativize(file.toURI()).getPath();
                             ZipEntry ze = new ZipEntry(fileName);
                             zos.putNextEntry(ze);
                             Files.copy(file.toPath(), zos);
@@ -598,9 +602,5 @@ public class ClipboardCommands extends MethodCommands {
     public void clearClipboard(Player player, LocalSession session, EditSession editSession) throws WorldEditException {
         session.setClipboard(null);
         BBC.CLIPBOARD_CLEARED.send(player);
-    }
-
-    public static Class<?> inject() {
-        return ClipboardCommands.class;
     }
 }

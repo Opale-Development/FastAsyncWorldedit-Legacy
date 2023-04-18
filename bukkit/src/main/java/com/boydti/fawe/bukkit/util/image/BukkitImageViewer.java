@@ -3,11 +3,13 @@ package com.boydti.fawe.bukkit.util.image;
 import com.boydti.fawe.util.image.Drawable;
 import com.boydti.fawe.util.image.ImageUtil;
 import com.boydti.fawe.util.image.ImageViewer;
+
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -133,7 +135,8 @@ public class BukkitImageViewer implements ImageViewer {
     }
 
     private void view(@Nullable BufferedImage image, @Nullable Drawable drawable) {
-        if (image == null && drawable == null) throw new IllegalArgumentException("An image or drawable must be provided. Both cannot be null");
+        if (image == null && drawable == null)
+            throw new IllegalArgumentException("An image or drawable must be provided. Both cannot be null");
         boolean initializing = last == null;
 
         if (this.frames != null) {

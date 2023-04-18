@@ -5,11 +5,13 @@ import com.boydti.fawe.object.FaweChunk;
 import com.boydti.fawe.util.MathMan;
 import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.bukkit.adapter.BukkitImplAdapter;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.block.Biome;
 
@@ -23,14 +25,6 @@ public class BukkitChunk_All_ReadonlySnapshot extends FaweChunk {
         super(parent, snapshot.getX(), snapshot.getZ());
         this.snapshot = snapshot;
         this.hasBiomes = biomes;
-    }
-
-    public void setTiles(Map<Short, CompoundTag> tiles) {
-        this.tiles = tiles;
-    }
-
-    public void setEntities(Set<CompoundTag> entities) {
-        this.entities = entities;
     }
 
     @Override
@@ -94,6 +88,10 @@ public class BukkitChunk_All_ReadonlySnapshot extends FaweChunk {
         return entities;
     }
 
+    public void setEntities(Set<CompoundTag> entities) {
+        this.entities = entities;
+    }
+
     @Override
     public Set<UUID> getEntityRemoves() {
         throw new UnsupportedOperationException("Read only");
@@ -102,6 +100,10 @@ public class BukkitChunk_All_ReadonlySnapshot extends FaweChunk {
     @Override
     public Map<Short, CompoundTag> getTiles() {
         return tiles;
+    }
+
+    public void setTiles(Map<Short, CompoundTag> tiles) {
+        this.tiles = tiles;
     }
 
     @Override

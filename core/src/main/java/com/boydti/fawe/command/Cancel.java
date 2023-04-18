@@ -7,6 +7,7 @@ import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.object.brush.visualization.VirtualWorld;
 import com.boydti.fawe.util.SetQueue;
 import com.sk89q.worldedit.EditSession;
+
 import java.util.Collection;
 import java.util.UUID;
 

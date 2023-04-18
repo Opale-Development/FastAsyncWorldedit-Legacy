@@ -50,6 +50,7 @@ import com.sk89q.worldedit.extent.inventory.SlottableBlockBag;
 import com.sk89q.worldedit.internal.registry.InputParser;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.BundledBlockData;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +81,10 @@ public class DefaultBlockParser extends InputParser<BaseBlock> {
         } else {
             throw new InputParseException("The user is not a player!");
         }
+    }
+
+    public static Class<DefaultBlockParser> inject() {
+        return DefaultBlockParser.class;
     }
 
     @Override
@@ -183,7 +188,8 @@ public class DefaultBlockParser extends InputParser<BaseBlock> {
                     data = item.getData();
                     nbt = item.getNbtData();
                     break;
-                } catch (NumberFormatException ignore) {}
+                } catch (NumberFormatException ignore) {
+                }
             }
             default: {
                 // Attempt to parse the item ID or otherwise resolve an item/block
@@ -461,9 +467,5 @@ public class DefaultBlockParser extends InputParser<BaseBlock> {
             default:
                 return new BaseBlock(blockId, data);
         }
-    }
-
-    public static Class<DefaultBlockParser> inject() {
-        return DefaultBlockParser.class;
     }
 }

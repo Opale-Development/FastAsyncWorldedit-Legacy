@@ -4,8 +4,10 @@ import com.boydti.fawe.FaweCache;
 import com.boydti.fawe.bukkit.wrapper.state.AsyncSign;
 import com.boydti.fawe.object.FaweQueue;
 import com.sk89q.worldedit.blocks.BlockID;
+
 import java.util.Collection;
 import java.util.List;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,11 +23,11 @@ import org.bukkit.plugin.Plugin;
 
 public class AsyncBlock implements Block {
 
+    public final FaweQueue queue;
+    public final AsyncWorld world;
     public int z;
     public int y;
     public int x;
-    public final FaweQueue queue;
-    public final AsyncWorld world;
 
     public AsyncBlock(AsyncWorld world, FaweQueue queue, int x, int y, int z) {
         this.world = world;
@@ -38,6 +40,11 @@ public class AsyncBlock implements Block {
     @Override
     public byte getData() {
         return (byte) (queue.getCachedCombinedId4Data(x, y, z, 0) & 0xF);
+    }
+
+    @Override
+    public void setData(byte data) {
+        setTypeIdAndData(getTypeId(), data, true);
     }
 
     @Override
@@ -58,6 +65,11 @@ public class AsyncBlock implements Block {
     @Override
     public Material getType() {
         return Material.getMaterial(queue.getCachedCombinedId4Data(x, y, z, 0) >> 4);
+    }
+
+    @Override
+    public void setType(Material type) {
+        setTypeIdAndData(type.getId(), (byte) 0, true);
     }
 
     @Override
@@ -107,11 +119,11 @@ public class AsyncBlock implements Block {
 
     @Override
     public Location getLocation(Location loc) {
-        if(loc != null) {
+        if (loc != null) {
             loc.setWorld(this.getWorld());
-            loc.setX((double)this.x);
-            loc.setY((double)this.y);
-            loc.setZ((double)this.z);
+            loc.setX((double) this.x);
+            loc.setY((double) this.y);
+            loc.setZ((double) this.z);
         }
         return loc;
     }
@@ -122,18 +134,8 @@ public class AsyncBlock implements Block {
     }
 
     @Override
-    public void setData(byte data) {
-        setTypeIdAndData(getTypeId(), data, true);
-    }
-
-    @Override
     public void setData(byte data, boolean applyPhysics) {
         setTypeIdAndData(getTypeId(), data, applyPhysics);
-    }
-
-    @Override
-    public void setType(Material type) {
-        setTypeIdAndData(type.getId(), (byte) 0, true);
     }
 
     @Override
@@ -159,9 +161,9 @@ public class AsyncBlock implements Block {
     @Override
     public BlockFace getFace(Block block) {
         BlockFace[] directions = BlockFace.values();
-        for(int i = 0; i < directions.length; ++i) {
+        for (int i = 0; i < directions.length; ++i) {
             BlockFace face = directions[i];
-            if(this.getX() + face.getModX() == block.getX() && this.getY() + face.getModY() == block.getY() && this.getZ() + face.getModZ() == block.getZ()) {
+            if (this.getX() + face.getModX() == block.getX() && this.getY() + face.getModY() == block.getY() && this.getZ() + face.getModZ() == block.getZ()) {
                 return face;
             }
         }

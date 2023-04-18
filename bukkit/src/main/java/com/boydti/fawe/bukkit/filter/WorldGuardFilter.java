@@ -24,6 +24,7 @@ public class WorldGuardFilter extends CuboidRegionFilter {
         checkNotNull(world);
         this.world = world;
     }
+
     @Override
     public void calculateRegions() {
         TaskManager.IMP.sync(new RunnableVal<Object>() {

@@ -36,6 +36,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.regions.selector.limit.SelectorLimits;
 import com.sk89q.worldedit.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -111,6 +112,10 @@ public class CuboidRegionSelector extends com.sk89q.worldedit.regions.CuboidRegi
         this.position2 = position2.toBlockVector();
         region.setPos1(position1);
         region.setPos2(position2);
+    }
+
+    public static Class<?> inject() {
+        return CuboidRegionSelector.class;
     }
 
     @Nullable
@@ -304,9 +309,5 @@ public class CuboidRegionSelector extends com.sk89q.worldedit.regions.CuboidRegi
     @Override
     public String getLegacyTypeID() {
         return "cuboid";
-    }
-
-    public static Class<?> inject() {
-        return CuboidRegionSelector.class;
     }
 }

@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bukkit.Bukkit;
 
 /**
@@ -30,7 +31,8 @@ public final class Reflection {
     private static final Map<Class<?>, Map<String, Map<ArrayWrapper<Class<?>>, Method>>> _loadedMethods = new HashMap<>();
     private static String _versionString;
 
-    private Reflection() { }
+    private Reflection() {
+    }
 
     /**
      * Gets the version string from the package name of the CraftBukkit server implementation.
@@ -109,7 +111,7 @@ public final class Reflection {
      * @return The NMS handle of the specified object, or {@code null} if it could not be retrieved using {@code getHandle()}.
      */
     public synchronized static Object getHandle(Object obj) throws InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-            return getMethod(obj.getClass(), "getHandle").invoke(obj);
+        return getMethod(obj.getClass(), "getHandle").invoke(obj);
     }
 
     /**

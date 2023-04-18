@@ -18,6 +18,7 @@ import com.boydti.fawe.util.MainUtil;
 import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,8 +36,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk, FaweChunk> {
 
-    private FaweQueue parent;
-    private NMSMappedFaweQueue parentNMS;
     private final boolean hasSky;
     private final File saveFolder;
     private final ThreadLocal<MutableMCABackedBaseBlock> blockStore = new ThreadLocal<MutableMCABackedBaseBlock>() {
@@ -45,12 +44,8 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
             return new MutableMCABackedBaseBlock();
         }
     };
-
-    @Override
-    protected void finalize() throws Throwable {
-        IterableThreadLocal.clean(blockStore);
-        super.finalize();
-    }
+    private FaweQueue parent;
+    private NMSMappedFaweQueue parentNMS;
 
     public MCAQueue(FaweQueue parent) {
         super(parent.getWorldName(), new MCAQueueMap());
@@ -68,6 +63,12 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
         ((MCAQueueMap) getFaweQueueMap()).setParentQueue(this);
         this.saveFolder = saveFolder;
         this.hasSky = hasSky;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        IterableThreadLocal.clean(blockStore);
+        super.finalize();
     }
 
     public boolean hasParent() {
@@ -101,7 +102,6 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
     }
 
     /**
-     *
      * @param newChunk
      * @param bx
      * @param tx
@@ -126,7 +126,7 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
         int cbz = (cz << 4) - oZ;
 
         boolean changed = false;
-            for (int otherCZ = otherBCZ; otherCZ <= otherTCZ; otherCZ++) {
+        for (int otherCZ = otherBCZ; otherCZ <= otherTCZ; otherCZ++) {
             for (int otherCX = otherBCX; otherCX <= otherTCX; otherCX++) {
                 FaweChunk chunk;
                 synchronized (this) {
@@ -151,7 +151,7 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
             }
         }
         return changed;
-}
+    }
 
     @Override
     public boolean setMCA(int mcaX, int mcaZ, RegionWrapper region, Runnable whileLocked, boolean save, boolean unload) {
@@ -308,7 +308,8 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
                     try {
                         Files.move(copyFile.toPath(), originalFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
                         return;
-                    } catch (IOException ignore) {}
+                    } catch (IOException ignore) {
+                    }
                 }
                 setMCA(original.getX(), original.getZ(), region, () -> {
                     task.addFileChange(originalFile);
@@ -626,7 +627,8 @@ public class MCAQueue extends NMSMappedFaweQueue<FaweQueue, FaweChunk, FaweChunk
     @Override
     public boolean supports(Capability capability) {
         switch (capability) {
-            case CHANGE_TASKS: return false;
+            case CHANGE_TASKS:
+                return false;
         }
         return super.supports(capability);
     }

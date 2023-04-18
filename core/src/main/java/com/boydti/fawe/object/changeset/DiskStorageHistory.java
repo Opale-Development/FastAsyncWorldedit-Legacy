@@ -15,6 +15,7 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
 import java.io.DataOutput;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,10 +44,10 @@ public class DiskStorageHistory extends FaweStreamChangeSet {
 
     /*
      * Block data
-     * 
+     *
      * [header]
      * {int origin x, int origin z}
-     * 
+     *
      * [contents]...
      * { short rel x, short rel z, unsigned byte y, short combinedFrom, short combinedTo }
      */
@@ -74,12 +75,6 @@ public class DiskStorageHistory extends FaweStreamChangeSet {
         init(uuid, world);
     }
 
-    private void init(UUID uuid, String worldName) {
-        File folder = MainUtil.getFile(Fawe.imp().getDirectory(), Settings.IMP.PATHS.HISTORY + File.separator + worldName + File.separator + uuid);
-        int max = MainUtil.getMaxFileId(folder);
-        init(uuid, max);
-    }
-
     public DiskStorageHistory(String world, UUID uuid, int index) {
         super(world);
         init(uuid, index);
@@ -102,6 +97,12 @@ public class DiskStorageHistory extends FaweStreamChangeSet {
         this.uuid = uuid;
         this.index = i;
         initFiles(folder);
+    }
+
+    private void init(UUID uuid, String worldName) {
+        File folder = MainUtil.getFile(Fawe.imp().getDirectory(), Settings.IMP.PATHS.HISTORY + File.separator + worldName + File.separator + uuid);
+        int max = MainUtil.getMaxFileId(folder);
+        init(uuid, max);
     }
 
     private void initFiles(File folder) {

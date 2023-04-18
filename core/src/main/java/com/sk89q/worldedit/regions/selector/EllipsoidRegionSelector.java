@@ -33,6 +33,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.regions.selector.limit.SelectorLimits;
 import com.sk89q.worldedit.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -95,7 +96,7 @@ public class EllipsoidRegionSelector extends com.sk89q.worldedit.regions.Ellipso
     /**
      * Create a new selector.
      *
-     * @param world the world
+     * @param world  the world
      * @param center the center
      * @param radius the radius
      */
@@ -104,6 +105,10 @@ public class EllipsoidRegionSelector extends com.sk89q.worldedit.regions.Ellipso
 
         region.setCenter(center);
         region.setRadius(radius);
+    }
+
+    public static Class<?> inject() {
+        return EllipsoidRegionSelector.class;
     }
 
     @Nullable
@@ -247,9 +252,5 @@ public class EllipsoidRegionSelector extends com.sk89q.worldedit.regions.Ellipso
     @Override
     public BlockVector getPrimaryPosition() throws IncompleteRegionException {
         return region.getCenter().toBlockVector();
-    }
-
-    public static Class<?> inject() {
-        return EllipsoidRegionSelector.class;
     }
 }

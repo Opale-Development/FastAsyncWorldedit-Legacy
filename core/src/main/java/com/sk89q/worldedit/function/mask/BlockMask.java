@@ -5,6 +5,7 @@ import com.boydti.fawe.util.StringMan;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.extent.Extent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +48,10 @@ public class BlockMask extends AbstractExtentMask {
      */
     public BlockMask(Extent extent, BaseBlock... block) {
         this(extent, Arrays.asList(checkNotNull(block)));
+    }
+
+    public static Class<?> inject() {
+        return BlockMask.class;
     }
 
     /**
@@ -160,9 +165,5 @@ public class BlockMask extends AbstractExtentMask {
     @Override
     public Mask2D toMask2D() {
         return null;
-    }
-
-    public static Class<?> inject() {
-        return BlockMask.class;
     }
 }

@@ -37,6 +37,7 @@ import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extension.platform.Capability;
 import com.sk89q.worldedit.extension.platform.Platform;
 import com.sk89q.worldedit.extension.platform.PlatformManager;
+
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -51,6 +52,10 @@ public class WorldEditCommands {
 
     public WorldEditCommands(WorldEdit we) {
         this.we = we;
+    }
+
+    public static Class<WorldEditCommands> inject() {
+        return WorldEditCommands.class;
     }
 
     @Command(
@@ -247,9 +252,5 @@ public class WorldEditCommands {
     @CommandPermissions("worldedit.help")
     public void help(Actor actor, CommandContext args) throws WorldEditException {
         UtilityCommands.help(args, we, actor);
-    }
-
-    public static Class<WorldEditCommands> inject() {
-        return WorldEditCommands.class;
     }
 }

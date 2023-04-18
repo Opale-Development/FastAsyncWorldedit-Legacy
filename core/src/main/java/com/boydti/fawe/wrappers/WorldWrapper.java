@@ -26,12 +26,17 @@ import com.sk89q.worldedit.util.TreeGenerator;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.registry.WorldData;
+
 import java.util.List;
 import javax.annotation.Nullable;
 
 public class WorldWrapper extends LocalWorld {
 
     private final World parent;
+
+    private WorldWrapper(World parent) {
+        this.parent = parent;
+    }
 
     public static WorldWrapper wrap(World world) {
         if (world == null) {
@@ -49,15 +54,10 @@ public class WorldWrapper extends LocalWorld {
         }
         if (world instanceof LocalWorldAdapter) {
             return unwrap(LocalWorldAdapter.unwrap(world));
-        }
-        else if (world instanceof EditSession) {
+        } else if (world instanceof EditSession) {
             return unwrap(((EditSession) world).getWorld());
         }
         return world;
-    }
-
-    private WorldWrapper(World parent) {
-        this.parent = parent;
     }
 
     public World getParent() {

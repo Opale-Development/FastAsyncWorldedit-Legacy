@@ -46,6 +46,7 @@ import com.sk89q.worldedit.util.command.binding.PrimitiveBindings;
 import com.sk89q.worldedit.util.command.binding.StandardBindings;
 import com.sk89q.worldedit.util.command.binding.Switch;
 import com.thoughtworks.paranamer.Paranamer;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -81,6 +82,10 @@ public class ParametricBuilder {
     public ParametricBuilder() {
         addBinding(new FawePrimitiveBinding());
         addBinding(new StandardBindings());
+    }
+
+    public static Class<?> inject() {
+        return ParametricBuilder.class;
     }
 
     /**
@@ -181,8 +186,7 @@ public class ParametricBuilder {
                 CommandCallable callable = build(object, method, definition);
                 if (processor != null) {
                     callable = new ProcessedCallable(callable, processor);
-                }
-                else if (object instanceof CallableProcessor) {
+                } else if (object instanceof CallableProcessor) {
                     callable = new ProcessedCallable(callable, (CallableProcessor) object);
                 }
                 if (object instanceof MethodCommands) {
@@ -290,10 +294,6 @@ public class ParametricBuilder {
     public void setDefaultCompleter(CommandCompleter defaultCompleter) {
         checkNotNull(defaultCompleter);
         this.defaultCompleter = defaultCompleter;
-    }
-
-    public static Class<?> inject() {
-        return ParametricBuilder.class;
     }
 
 }

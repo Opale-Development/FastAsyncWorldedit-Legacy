@@ -38,6 +38,7 @@ import com.sk89q.worldedit.util.TreeGenerator.TreeType;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.registry.WorldData;
+
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -55,6 +56,28 @@ public class LocalWorldAdapter extends LocalWorld {
     private LocalWorldAdapter(World world) {
         checkNotNull(world);
         this.world = world;
+    }
+
+    public static LocalWorldAdapter adapt(World world) {
+        return new LocalWorldAdapter(world);
+    }
+
+    public static LocalWorld wrap(World world) {
+        if (world instanceof LocalWorld) {
+            return (LocalWorld) world;
+        }
+        return new LocalWorldAdapter(world);
+    }
+
+    public static World unwrap(World world) {
+        if (world instanceof LocalWorldAdapter) {
+            return ((LocalWorldAdapter) world).world;
+        }
+        return world;
+    }
+
+    public static Class<?> inject() {
+        return LocalWorldAdapter.class;
     }
 
     @Override
@@ -255,27 +278,5 @@ public class LocalWorldAdapter extends LocalWorld {
     @Override
     public List<? extends Entity> getEntities() {
         return world.getEntities();
-    }
-
-    public static LocalWorldAdapter adapt(World world) {
-        return new LocalWorldAdapter(world);
-    }
-
-    public static LocalWorld wrap(World world) {
-        if (world instanceof LocalWorld) {
-            return (LocalWorld) world;
-        }
-        return new LocalWorldAdapter(world);
-    }
-
-    public static World unwrap(World world) {
-        if (world instanceof LocalWorldAdapter) {
-            return ((LocalWorldAdapter) world).world;
-        }
-        return world;
-    }
-
-    public static Class<?> inject() {
-        return LocalWorldAdapter.class;
     }
 }

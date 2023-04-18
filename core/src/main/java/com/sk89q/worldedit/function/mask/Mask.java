@@ -25,6 +25,7 @@ import com.sk89q.worldedit.LocalPlayer;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.command.UtilityCommands;
+
 import java.io.Serializable;
 import javax.annotation.Nullable;
 
@@ -33,6 +34,10 @@ import javax.annotation.Nullable;
  */
 @Link(clazz = UtilityCommands.class, value = "masks")
 public interface Mask extends com.sk89q.worldedit.masks.Mask, Serializable {
+
+    public static Class<Mask> inject() {
+        return Mask.class;
+    }
 
     /**
      * Returns true if the criteria is met.
@@ -57,9 +62,5 @@ public interface Mask extends com.sk89q.worldedit.masks.Mask, Serializable {
 
     default boolean matches(EditSession editSession, Vector position) {
         return test(position);
-    }
-
-    public static Class<Mask> inject() {
-        return Mask.class;
     }
 }

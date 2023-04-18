@@ -34,6 +34,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.registry.BundledBlockData;
+
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -56,6 +57,10 @@ public class AbstractDelegateExtent implements LightingExtent {
     public AbstractDelegateExtent(Extent extent) {
         checkNotNull(extent);
         this.extent = extent;
+    }
+
+    public static Class<?> inject() {
+        return AbstractDelegateExtent.class;
     }
 
     public int getSkyLight(int x, int y, int z) {
@@ -226,9 +231,5 @@ public class AbstractDelegateExtent implements LightingExtent {
         } else {
             return null;
         }
-    }
-
-    public static Class<?> inject() {
-        return AbstractDelegateExtent.class;
     }
 }

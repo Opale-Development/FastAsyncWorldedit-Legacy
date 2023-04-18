@@ -13,7 +13,9 @@ import com.sk89q.jnbt.ListTag;
 import com.sk89q.jnbt.StringTag;
 import com.sk89q.jnbt.Tag;
 import com.sk89q.worldedit.internal.Constants;
+
 import java.util.*;
+
 import net.minecraft.server.v1_7_R4.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -23,14 +25,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 
 public class BukkitChunk_1_7 extends CharFaweChunk<Chunk, BukkitQueue17> {
 
-    @Override
-    public Chunk getNewChunk() {
-        return Bukkit.getWorld(getParent().getWorldName()).getChunkAt(getX(), getZ());
-    }
-
     public final byte[][] byteIds;
     public final NibbleArray[] datas;
-
     public BukkitChunk_1_7(FaweQueue parent, int x, int z) {
         super(parent, x, z);
         this.byteIds = new byte[16][];
@@ -41,6 +37,11 @@ public class BukkitChunk_1_7 extends CharFaweChunk<Chunk, BukkitQueue17> {
         super(parent, x, z, ids, count, air, heightMap);
         this.byteIds = byteIds;
         this.datas = datas;
+    }
+
+    @Override
+    public Chunk getNewChunk() {
+        return Bukkit.getWorld(getParent().getWorldName()).getChunkAt(getX(), getZ());
     }
 
     @Override
@@ -304,8 +305,7 @@ public class BukkitChunk_1_7 extends CharFaweChunk<Chunk, BukkitQueue17> {
                                 newDataArray.a[i] = (byte) (val & 240);
                             }
                         }
-                    }
-                    else if (newDataArray != null) {
+                    } else if (newDataArray != null) {
                         if (compactData != 0) {
                             byte full = (byte) ((compactData << 4) + compactData);
                             for (int i = 0; i < newDataArray.a.length; i++) {
@@ -416,7 +416,7 @@ public class BukkitChunk_1_7 extends CharFaweChunk<Chunk, BukkitQueue17> {
             // Set biomes
             if (this.biomes != null) {
                 byte[] currentBiomes = nmsChunk.m();
-                for (int i = 0 ; i < this.biomes.length; i++) {
+                for (int i = 0; i < this.biomes.length; i++) {
                     byte biome = this.biomes[i];
                     if (biome != 0) {
                         if (biome == -1) biome = 0;

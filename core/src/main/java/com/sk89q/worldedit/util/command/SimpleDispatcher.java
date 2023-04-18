@@ -26,6 +26,7 @@ import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandLocals;
 import com.sk89q.minecraft.util.commands.CommandPermissionsException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,6 +52,10 @@ public class SimpleDispatcher implements Dispatcher {
         SimpleParameter extraArgs = new SimpleParameter("...");
         extraArgs.setOptional(true);
         description.getParameters().add(extraArgs);
+    }
+
+    public static Class<SimpleDispatcher> inject() {
+        return SimpleDispatcher.class;
     }
 
     @Override
@@ -187,10 +192,6 @@ public class SimpleDispatcher implements Dispatcher {
     public boolean testPermission(CommandLocals locals) {
         // Checking every perm in the class here was unnecessarily stupid
         return true;
-    }
-
-    public static Class<SimpleDispatcher> inject() {
-        return SimpleDispatcher.class;
     }
 
 }

@@ -10,6 +10,7 @@ import com.boydti.fawe.object.RunnableVal;
 import com.boydti.fawe.object.exception.FaweException;
 import com.boydti.fawe.util.MathMan;
 import com.boydti.fawe.util.SetQueue;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,20 +27,18 @@ public class MCAQueueMap implements IFaweQueueMap {
     private Map<Long, MCAFile> mcaFileMap = new ConcurrentHashMap<>(8, 0.9f, 1);
     private NullFaweChunk nullChunk;
     private boolean isHybridQueue;
+    private MCAFile lastFile;
+    private int lastFileX = Integer.MIN_VALUE;
+    private int lastFileZ = Integer.MIN_VALUE;
+    private FaweChunk lastChunk;
+    private int lastX = Integer.MIN_VALUE;
+    private int lastZ = Integer.MIN_VALUE;
 
     public void setParentQueue(FaweQueue queue) {
         this.queue = queue;
         this.nullChunk = new NullFaweChunk(queue, 0, 0);
         this.isHybridQueue = queue != null && !(queue instanceof MCAQueue) && (!(queue instanceof MappedFaweQueue) || ((MappedFaweQueue) queue).getFaweQueueMap() != this);
     }
-
-    private MCAFile lastFile;
-    private int lastFileX = Integer.MIN_VALUE;
-    private int lastFileZ = Integer.MIN_VALUE;
-
-    private FaweChunk lastChunk;
-    private int lastX = Integer.MIN_VALUE;
-    private int lastZ = Integer.MIN_VALUE;
 
     public synchronized MCAFile getMCAFile(int cx, int cz, boolean create) {
         int mcaX = cx >> 5;

@@ -64,6 +64,7 @@ import com.sk89q.worldedit.util.command.parametric.Optional;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.biome.Biomes;
 import com.sk89q.worldedit.world.registry.BiomeRegistry;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -94,6 +95,10 @@ public class RegionCommands extends MethodCommands {
         super(worldEdit);
         checkNotNull(worldEdit);
         this.worldEdit = worldEdit;
+    }
+
+    public static Class<?> inject() {
+        return RegionCommands.class;
     }
 
     @Command(
@@ -513,7 +518,6 @@ public class RegionCommands extends MethodCommands {
         }
     }
 
-
     @Command(
             aliases = {"/move"},
             usage = "[count] [direction] [leave-id]",
@@ -790,9 +794,5 @@ public class RegionCommands extends MethodCommands {
 
             BBC.COMMAND_FLORA.send(player, ground.getAffected());
         }, getArguments(context), region, context);
-    }
-
-    public static Class<?> inject() {
-        return RegionCommands.class;
     }
 }

@@ -64,8 +64,8 @@ public class StringMan {
     public static String prettyFormat(double d) {
         if (d == Double.MIN_VALUE) return "-∞";
         if (d == Double.MAX_VALUE) return "∞";
-        if(d == (long) d) return String.format("%d",(long)d);
-        else return String.format("%s",d);
+        if (d == (long) d) return String.format("%d", (long) d);
+        else return String.format("%s", d);
     }
 
     public static boolean isBracketForwards(char c) {
@@ -75,21 +75,31 @@ public class StringMan {
             case '{':
             case '<':
                 return true;
-            default: return false;
+            default:
+                return false;
         }
     }
 
     public static char getMatchingBracket(char c) {
         switch (c) {
-            case '[': return ']';
-            case '(': return ')';
-            case '{': return '}';
-            case '<': return '>';
-            case ']': return '[';
-            case ')': return '(';
-            case '}': return '{';
-            case '>': return '<';
-            default: return c;
+            case '[':
+                return ']';
+            case '(':
+                return ')';
+            case '{':
+                return '}';
+            case '<':
+                return '>';
+            case ']':
+                return '[';
+            case ')':
+                return '(';
+            case '}':
+                return '{';
+            case '>':
+                return '<';
+            default:
+                return c;
         }
     }
 
@@ -406,8 +416,7 @@ public class StringMan {
         if (char0 == '-') {
             negative = true;
             start++;
-        }
-        else negative = false;
+        } else negative = false;
         for (int i = start; i < end; i++) {
             char c = string.charAt(i);
             switch (c) {

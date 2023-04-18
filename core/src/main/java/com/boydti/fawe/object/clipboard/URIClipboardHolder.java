@@ -3,6 +3,7 @@ package com.boydti.fawe.object.clipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.registry.WorldData;
+
 import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
@@ -25,8 +26,8 @@ public class URIClipboardHolder extends ClipboardHolder {
     }
 
     /**
-     * @deprecated If a holder has multiple sources, this will return an empty URI
      * @return The original source of this clipboard (usually a file or url)
+     * @deprecated If a holder has multiple sources, this will return an empty URI
      */
     @Deprecated
     public URI getUri() {

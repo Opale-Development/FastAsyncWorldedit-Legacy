@@ -34,13 +34,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class RegionMaskTestFunction implements RegionFunction {
 
-    private final RegionFunction pass,fail;
+    private final RegionFunction pass, fail;
     private Mask mask;
 
     /**
      * Create a new masking filter.
      *
-     * @param mask the mask
+     * @param mask     the mask
      * @param function the function
      */
     public RegionMaskTestFunction(Mask mask, RegionFunction success, RegionFunction failure) {

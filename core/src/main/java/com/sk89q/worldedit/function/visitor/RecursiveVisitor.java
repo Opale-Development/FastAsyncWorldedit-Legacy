@@ -55,12 +55,12 @@ public class RecursiveVisitor extends BreadthFirstSearch {
         this.mask = mask;
     }
 
+    public static Class<?> inject() {
+        return RecursiveVisitor.class;
+    }
+
     @Override
     public boolean isVisitable(final Vector from, final Vector to) {
         return this.mask.test(to);
-    }
-
-    public static Class<?> inject() {
-        return RecursiveVisitor.class;
     }
 }

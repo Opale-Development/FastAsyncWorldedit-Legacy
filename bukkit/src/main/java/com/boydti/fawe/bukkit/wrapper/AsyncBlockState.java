@@ -2,7 +2,9 @@ package com.boydti.fawe.bukkit.wrapper;
 
 import com.boydti.fawe.FaweCache;
 import com.sk89q.jnbt.CompoundTag;
+
 import java.util.List;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,10 +17,10 @@ import org.bukkit.plugin.Plugin;
 
 public class AsyncBlockState implements BlockState {
 
+    private final AsyncBlock block;
     private byte data;
     private short id;
     private CompoundTag nbt;
-    private final AsyncBlock block;
 
     public AsyncBlockState(AsyncBlock block) {
         this(block, block.queue.getCombinedId4Data(block.x, block.y, block.z, 0));
@@ -46,8 +48,19 @@ public class AsyncBlockState implements BlockState {
     }
 
     @Override
+    public void setData(MaterialData data) {
+        setTypeId(data.getItemTypeId());
+        setRawData(data.getData());
+    }
+
+    @Override
     public Material getType() {
         return Material.getMaterial(id);
+    }
+
+    @Override
+    public void setType(Material type) {
+        setTypeId(type.getId());
     }
 
     @Override
@@ -93,17 +106,6 @@ public class AsyncBlockState implements BlockState {
     @Override
     public Chunk getChunk() {
         return block.getChunk();
-    }
-
-    @Override
-    public void setData(MaterialData data) {
-        setTypeId(data.getItemTypeId());
-        setRawData(data.getData());
-    }
-
-    @Override
-    public void setType(Material type) {
-        setTypeId(type.getId());
     }
 
     @Override

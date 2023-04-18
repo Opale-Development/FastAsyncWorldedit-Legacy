@@ -14,6 +14,7 @@ import com.sk89q.worldedit.history.changeset.ChangeSet;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -26,9 +27,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class HistoryExtent extends AbstractDelegateExtent {
 
-    private FaweChangeSet changeSet;
     private final FaweQueue queue;
     private final EditSession session;
+    private FaweChangeSet changeSet;
 
     /**
      * Create a new instance.

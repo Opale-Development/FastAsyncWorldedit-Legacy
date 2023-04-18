@@ -54,6 +54,7 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.biome.BiomeData;
 import com.sk89q.worldedit.world.registry.BiomeRegistry;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,6 +75,10 @@ public class BiomeCommands extends MethodCommands {
      */
     public BiomeCommands(WorldEdit worldEdit) {
         super(worldEdit);
+    }
+
+    public static Class<BiomeCommands> inject() {
+        return BiomeCommands.class;
     }
 
     @Command(
@@ -228,9 +233,5 @@ public class BiomeCommands extends MethodCommands {
         BBC.BIOME_CHANGED.send(player, visitor.getAffected());
         if (!FawePlayer.wrap(player).hasPermission("fawe.tips"))
             BBC.TIP_BIOME_PATTERN.or(BBC.TIP_BIOME_MASK).send(player);
-    }
-
-    public static Class<BiomeCommands> inject() {
-        return BiomeCommands.class;
     }
 }

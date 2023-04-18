@@ -41,6 +41,10 @@ public class MessageBox extends StyledFragment {
         append(contents);
     }
 
+    public static Class<?> inject() {
+        return MessageBox.class;
+    }
+
     /**
      * Get the internal contents.
      *
@@ -48,9 +52,5 @@ public class MessageBox extends StyledFragment {
      */
     public StyledFragment getContents() {
         return contents;
-    }
-
-    public static Class<?> inject() {
-        return MessageBox.class;
     }
 }

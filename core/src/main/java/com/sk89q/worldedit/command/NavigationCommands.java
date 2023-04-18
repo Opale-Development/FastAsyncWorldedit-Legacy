@@ -59,6 +59,10 @@ public class NavigationCommands {
         this.worldEdit = worldEdit;
     }
 
+    public static Class<?> inject() {
+        return NavigationCommands.class;
+    }
+
     @Command(
             aliases = {"unstuck", "!"},
             usage = "",
@@ -169,8 +173,8 @@ public class NavigationCommands {
             aliases = {"jumpto", "j"},
             usage = "[world,x,y,z]",
             desc = "Teleport to a location" +
-            		"Flags:\n" + 
-            		"  -f forces the specified position to be used",
+                    "Flags:\n" +
+                    "  -f forces the specified position to be used",
             flags = "f",
             min = 0,
             max = 1
@@ -192,7 +196,8 @@ public class NavigationCommands {
             pos = player.getSolidBlockTrace(300);
         }
         if (pos != null) {
-            if(args.hasFlag('f')) player.setPosition(pos); else player.findFreePosition(pos);
+            if (args.hasFlag('f')) player.setPosition(pos);
+            else player.findFreePosition(pos);
             BBC.POOF.send(player);
         } else {
             BBC.NO_BLOCK.send(player);
@@ -233,9 +238,5 @@ public class NavigationCommands {
         final boolean forceGlass = args.hasFlag('g');
 
         return forceGlass || (config.navigationUseGlass && !forceFlight);
-    }
-
-    public static Class<?> inject() {
-        return NavigationCommands.class;
     }
 }

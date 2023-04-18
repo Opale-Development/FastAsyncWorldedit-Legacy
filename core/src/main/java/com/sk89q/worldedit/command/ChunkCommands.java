@@ -34,6 +34,7 @@ import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.math.MathUtils;
 import com.sk89q.worldedit.world.storage.LegacyChunkStore;
 import com.sk89q.worldedit.world.storage.McRegionChunkStore;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -54,6 +55,10 @@ public class ChunkCommands {
     public ChunkCommands(WorldEdit worldEdit) {
         checkNotNull(worldEdit);
         this.worldEdit = worldEdit;
+    }
+
+    public static Class<ChunkCommands> inject() {
+        return ChunkCommands.class;
     }
 
     @Command(
@@ -182,9 +187,5 @@ public class ChunkCommands {
         } else {
             player.printError(BBC.getPrefix() + "Shell script type must be configured: 'bat' or 'bash' expected.");
         }
-    }
-
-    public static Class<ChunkCommands> inject() {
-        return ChunkCommands.class;
     }
 }

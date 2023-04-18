@@ -45,16 +45,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class FawePlayer<T> extends Metadatable {
 
-    public final T parent;
-    private LocalSession session;
-
-    public static final class METADATA_KEYS {
-        public static final String ANVIL_CLIPBOARD = "anvil-clipboard";
-        public static final String ROLLBACK = "rollback";
-    }
-
     private static Class<?> playerProxyClass = null;
     private static Field fieldBasePlayer = null;
+
     static {
         try {
             playerProxyClass = Class.forName("com.sk89q.worldedit.extension.platform.PlayerProxy");
@@ -62,6 +55,40 @@ public abstract class FawePlayer<T> extends Metadatable {
             fieldBasePlayer.setAccessible(true);
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+    }
+
+    public final T parent;
+    private LocalSession session;
+    // Queue for async tasks
+    private AtomicInteger runningCount = new AtomicInteger();
+    private SimpleAsyncNotifyQueue asyncNotifyQueue = new SimpleAsyncNotifyQueue((t, e) -> {
+        while (e.getCause() != null) {
+            e = e.getCause();
+        }
+        if (e instanceof WorldEditException) {
+            sendMessage(BBC.getPrefix() + e.getLocalizedMessage());
+        } else {
+            FaweException fe = FaweException.get(e);
+            if (fe != null) {
+                sendMessage(fe.getMessage());
+            } else {
+                e.printStackTrace();
+            }
+        }
+    });
+    private Player cachedWorldEditPlayer;
+
+    @Deprecated
+    public FawePlayer(final T parent) {
+        this.parent = parent;
+        Fawe.get().register(this);
+        if (Settings.IMP.CLIPBOARD.USE_DISK) {
+            loadClipboardFromDisk();
+        }
+        Updater updater = Fawe.get().getUpdater();
+        if (updater != null && updater.hasPending(this)) {
+            TaskManager.IMP.async(() -> updater.confirmUpdate(this));
         }
     }
 
@@ -89,7 +116,7 @@ public abstract class FawePlayer<T> extends Metadatable {
         }
         if (obj instanceof Player) {
             Player actor = LocationMaskedPlayerWrapper.unwrap((Player) obj);
-            if ((fieldBasePlayer != null && playerProxyClass.isAssignableFrom(obj.getClass()))  ) {
+            if ((fieldBasePlayer != null && playerProxyClass.isAssignableFrom(obj.getClass()))) {
                 try {
                     Player player = (Player) fieldBasePlayer.get(actor);
                     FawePlayer<Object> result = wrap(player);
@@ -130,19 +157,6 @@ public abstract class FawePlayer<T> extends Metadatable {
         return Fawe.imp().wrap(obj);
     }
 
-    @Deprecated
-    public FawePlayer(final T parent) {
-        this.parent = parent;
-        Fawe.get().register(this);
-        if (Settings.IMP.CLIPBOARD.USE_DISK) {
-            loadClipboardFromDisk();
-        }
-        Updater updater = Fawe.get().getUpdater();
-        if (updater != null && updater.hasPending(this)) {
-            TaskManager.IMP.async(() -> updater.confirmUpdate(this));
-        }
-    }
-
     public int cancel(boolean close) {
         Collection<FaweQueue> queues = SetQueue.IMP.getAllQueues();
         int cancelled = 0;
@@ -169,7 +183,8 @@ public abstract class FawePlayer<T> extends Metadatable {
                     }
                 } else world.clear();
             }
-        } catch (NoCapablePlatformException ignore) {}
+        } catch (NoCapablePlatformException ignore) {
+        }
         return cancelled;
     }
 
@@ -292,6 +307,7 @@ public abstract class FawePlayer<T> extends Metadatable {
 
     /**
      * Queue an action to run async
+     *
      * @param run
      */
     public void queueAction(final Runnable run) {
@@ -310,26 +326,9 @@ public abstract class FawePlayer<T> extends Metadatable {
         return runAction(r, true, false);
     }
 
-    // Queue for async tasks
-    private AtomicInteger runningCount = new AtomicInteger();
-    private SimpleAsyncNotifyQueue asyncNotifyQueue = new SimpleAsyncNotifyQueue((t, e) -> {
-        while (e.getCause() != null) {
-            e = e.getCause();
-        }
-        if (e instanceof WorldEditException) {
-            sendMessage(BBC.getPrefix() + e.getLocalizedMessage());
-        } else {
-            FaweException fe = FaweException.get(e);
-            if (fe != null) {
-                sendMessage(fe.getMessage());
-            } else {
-                e.printStackTrace();
-            }
-        }
-    });
-
     /**
      * Run a task either async, or on the current thread
+     *
      * @param ifFree
      * @param checkFree Whether to first check if a task is running
      * @param async
@@ -525,8 +524,6 @@ public abstract class FawePlayer<T> extends Metadatable {
      */
     public abstract Player toWorldEditPlayer();
 
-    private Player cachedWorldEditPlayer;
-
     public Player getPlayer() {
         if (cachedWorldEditPlayer == null) {
             cachedWorldEditPlayer = toWorldEditPlayer();
@@ -545,30 +542,6 @@ public abstract class FawePlayer<T> extends Metadatable {
         } catch (final IncompleteRegionException e) {
             return null;
         }
-    }
-
-    /**
-     * Get the player's current LocalSession
-     *
-     * @return
-     */
-    public LocalSession getSession() {
-        return (this.session != null || this.getPlayer() == null || Fawe.get() == null) ? this.session : (session = Fawe.get().getWorldEdit().getSession(this.getPlayer()));
-    }
-
-    /**
-     * Get the player's current allowed WorldEdit regions
-     *
-     * @return
-     */
-    @Deprecated
-    public Region[] getCurrentRegions() {
-        return WEManager.IMP.getMask(this);
-    }
-
-    @Deprecated
-    public Region[] getCurrentRegions(FaweMaskManager.MaskType type) {
-        return WEManager.IMP.getMask(this, type);
     }
 
     /**
@@ -614,6 +587,30 @@ public abstract class FawePlayer<T> extends Metadatable {
      */
     public void setSelection(final RegionSelector selector) {
         this.getSession().setRegionSelector(toWorldEditPlayer().getWorld(), selector);
+    }
+
+    /**
+     * Get the player's current LocalSession
+     *
+     * @return
+     */
+    public LocalSession getSession() {
+        return (this.session != null || this.getPlayer() == null || Fawe.get() == null) ? this.session : (session = Fawe.get().getWorldEdit().getSession(this.getPlayer()));
+    }
+
+    /**
+     * Get the player's current allowed WorldEdit regions
+     *
+     * @return
+     */
+    @Deprecated
+    public Region[] getCurrentRegions() {
+        return WEManager.IMP.getMask(this);
+    }
+
+    @Deprecated
+    public Region[] getCurrentRegions(FaweMaskManager.MaskType type) {
+        return WEManager.IMP.getMask(this, type);
     }
 
     /**
@@ -666,7 +663,8 @@ public abstract class FawePlayer<T> extends Metadatable {
                         ((BrushTool) tool).clear(getPlayer());
                     }
                 }
-            } catch (NoCapablePlatformException ignore) {}
+            } catch (NoCapablePlatformException ignore) {
+            }
         }
         Fawe.get().unregister(getName());
     }
@@ -685,6 +683,7 @@ public abstract class FawePlayer<T> extends Metadatable {
     /**
      * Get the World the player is editing in (may not match the world they are in)<br/>
      * - e.g. If they are editing a CFI world.<br/>
+     *
      * @return Editing world
      */
     public World getWorldForEditing() {
@@ -722,7 +721,6 @@ public abstract class FawePlayer<T> extends Metadatable {
         return proxy;
     }
 
-
     /**
      * Get the tracked EditSession(s) for this player<br>
      * - Queued or autoqueued EditSessions are considered tracked
@@ -755,5 +753,10 @@ public abstract class FawePlayer<T> extends Metadatable {
             }
         }
         return map;
+    }
+
+    public static final class METADATA_KEYS {
+        public static final String ANVIL_CLIPBOARD = "anvil-clipboard";
+        public static final String ROLLBACK = "rollback";
     }
 }

@@ -21,6 +21,7 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.util.command.parametric.Optional;
 import com.sk89q.worldedit.util.command.parametric.ParameterException;
+
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 
@@ -43,6 +44,10 @@ public class OptionsCommands {
     public OptionsCommands(WorldEdit worldEdit) {
         checkNotNull(worldEdit);
         this.worldEdit = worldEdit;
+    }
+
+    public static Class<?> inject() {
+        return OptionsCommands.class;
     }
 
     @Command(
@@ -316,9 +321,5 @@ public class OptionsCommands {
         if (found == 0) {
             actor.printError("No items found.");
         }
-    }
-
-    public static Class<?> inject() {
-        return OptionsCommands.class;
     }
 }

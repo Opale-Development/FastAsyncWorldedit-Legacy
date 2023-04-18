@@ -34,6 +34,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.util.command.binding.Range;
 import com.sk89q.worldedit.util.command.parametric.Optional;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -44,10 +45,10 @@ import java.util.Set;
 @Command(aliases = {"patterns"},
         desc = "Help for the various patterns. [More Info](https://git.io/vSPmA)",
         help = "Patterns determine what blocks are placed\n" +
-        " - Use [brackets] for arguments\n" +
-        " - Use , to OR multiple\n" +
-        "e.g. #surfacespread[10][#existing],andesite\n" +
-        "More Info: https://git.io/vSPmA"
+                " - Use [brackets] for arguments\n" +
+                " - Use , to OR multiple\n" +
+                "e.g. #surfacespread[10][#existing],andesite\n" +
+                "More Info: https://git.io/vSPmA"
 )
 public class PatternCommands extends MethodCommands {
     public PatternCommands(WorldEdit worldEdit) {

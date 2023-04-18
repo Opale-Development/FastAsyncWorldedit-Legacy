@@ -1,5 +1,5 @@
 repositories {
-    flatDir {dirs 'lib'}
+    flatDir { dirs 'lib' }
 }
 dependencies {
     compile project(':core')
@@ -45,7 +45,7 @@ processResources {
     }
 }
 
-jar.archiveName="fawe-bukkit-${project.parent.version}.jar"
+jar.archiveName = "fawe-bukkit-${project.parent.version}.jar"
 jar.destinationDir = file '../mvn/com/boydti/fawe-bukkit/' + project.parent.version
 task createPom << {
     pom {
@@ -55,7 +55,7 @@ task createPom << {
             version project.parent.version
         }
     }
-    .getEffectivePom()
+            .getEffectivePom()
             .setDependencies(new ArrayList<>())
             .writeTo("../mvn/com/boydti/fawe-bukkit/${project.parent.version}/fawe-bukkit-${project.parent.version}.pom")
     pom {
@@ -65,7 +65,7 @@ task createPom << {
             version 'latest'
         }
     }
-    .getEffectivePom()
+            .getEffectivePom()
             .setDependencies(new ArrayList<>())
             .writeTo("../mvn/com/boydti/fawe-bukkit/latest/fawe-bukkit-latest.pom")
 }
@@ -75,7 +75,7 @@ task copyFiles {
             from "../mvn/com/boydti/fawe-bukkit/${project.parent.version}/"
             into '../mvn/com/boydti/fawe-bukkit/latest/'
             include('*.jar')
-            rename ("fawe-bukkit-${project.parent.version}.jar", 'fawe-bukkit-latest.jar')
+            rename("fawe-bukkit-${project.parent.version}.jar", 'fawe-bukkit-latest.jar')
         }
     }
 }

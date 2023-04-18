@@ -45,6 +45,12 @@ public enum LZ4Utils {
         return (i * -1640531535) >>> ((MIN_MATCH * 8) - HASH_LOG_HC);
     }
 
+    public static void copyTo(Match m1, Match m2) {
+        m2.len = m1.len;
+        m2.start = m1.start;
+        m2.ref = m1.ref;
+    }
+
     public static class Match {
         int start, ref, len;
 
@@ -57,12 +63,6 @@ public enum LZ4Utils {
         int end() {
             return start + len;
         }
-    }
-
-    public static void copyTo(Match m1, Match m2) {
-        m2.len = m1.len;
-        m2.start = m1.start;
-        m2.ref = m1.ref;
     }
 
 }

@@ -27,6 +27,10 @@ public class BlockPattern implements Pattern {
         this.block = FaweCache.getBlock(id, data);
     }
 
+    public static Class<BlockPattern> inject() {
+        return BlockPattern.class;
+    }
+
     @Override
     public BaseBlock apply(Vector position) {
         return block;
@@ -54,9 +58,5 @@ public class BlockPattern implements Pattern {
     public void setBlock(BaseBlock block) {
         checkNotNull(block);
         this.block = block;
-    }
-
-    public static Class<BlockPattern> inject() {
-        return BlockPattern.class;
     }
 }

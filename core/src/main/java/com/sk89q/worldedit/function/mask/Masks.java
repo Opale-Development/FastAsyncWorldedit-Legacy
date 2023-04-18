@@ -6,6 +6,7 @@ import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.Vector2D;
 import com.sk89q.worldedit.session.request.Request;
+
 import javax.annotation.Nullable;
 
 
@@ -201,6 +202,10 @@ public final class Masks {
         };
     }
 
+    public static Class<?> inject() {
+        return Masks.class;
+    }
+
     private static class AlwaysTrue implements Mask, Mask2D {
         @Override
         public boolean test(Vector vector) {
@@ -235,9 +240,5 @@ public final class Masks {
         public Mask2D toMask2D() {
             return this;
         }
-    }
-
-    public static Class<?> inject() {
-        return Masks.class;
     }
 }

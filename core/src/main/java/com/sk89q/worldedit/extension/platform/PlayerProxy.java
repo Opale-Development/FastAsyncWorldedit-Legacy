@@ -42,6 +42,10 @@ public class PlayerProxy extends AbstractPlayerActor {
         this.world = world;
     }
 
+    public static Class inject() {
+        return PlayerProxy.class;
+    }
+
     public void setOffset(Vector position) {
         this.offset = position;
     }
@@ -136,9 +140,5 @@ public class PlayerProxy extends AbstractPlayerActor {
 
     public SessionKey getSessionKey() {
         return this.basePlayer.getSessionKey();
-    }
-
-    public static Class inject() {
-        return PlayerProxy.class;
     }
 }

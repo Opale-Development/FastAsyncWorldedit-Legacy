@@ -53,6 +53,10 @@ public class EntityCreate implements Change {
         this.entity = entity;
     }
 
+    public static Class<?> inject() {
+        return EntityCreate.class;
+    }
+
     @Override
     public void undo(UndoContext context) throws WorldEditException {
         if (entity != null) {
@@ -64,9 +68,5 @@ public class EntityCreate implements Change {
     @Override
     public void redo(UndoContext context) throws WorldEditException {
         entity = checkNotNull(context.getExtent()).createEntity(location, state);
-    }
-
-    public static Class<?> inject() {
-        return EntityCreate.class;
     }
 }

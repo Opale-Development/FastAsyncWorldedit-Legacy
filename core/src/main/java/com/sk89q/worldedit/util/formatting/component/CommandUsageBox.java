@@ -29,6 +29,7 @@ import com.sk89q.worldedit.util.command.Dispatcher;
 import com.sk89q.worldedit.util.command.PrimaryAliasComparator;
 import com.sk89q.worldedit.util.formatting.Style;
 import com.sk89q.worldedit.util.formatting.StyledFragment;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +70,10 @@ public class CommandUsageBox extends StyledFragment {
         }
     }
 
+    public static Class<?> inject() {
+        return CommandUsageBox.class;
+    }
+
     private void attachDispatcherUsage(Dispatcher dispatcher, String commandString, @Nullable CommandLocals locals) {
         CommandListBox box = new CommandListBox(BBC.HELP_HEADER_SUBCOMMANDS.f());
         String prefix = !commandString.isEmpty() ? commandString + " " : "";
@@ -107,10 +112,6 @@ public class CommandUsageBox extends StyledFragment {
         }
 
         append(box);
-    }
-
-    public static Class<?> inject() {
-        return CommandUsageBox.class;
     }
 
 }

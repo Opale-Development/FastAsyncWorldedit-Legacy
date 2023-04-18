@@ -1,9 +1,11 @@
 package com.boydti.fawe.bukkit.chat;
 
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 /**
@@ -19,6 +21,10 @@ final class JsonString implements JsonRepresentedObject, ConfigurationSerializab
         _value = value == null ? null : value.toString();
     }
 
+    public static JsonString deserialize(Map<String, Object> map) {
+        return new JsonString(map.get("stringValue").toString());
+    }
+
     @Override
     public void writeJson(JsonWriter writer) throws IOException {
         writer.value(getValue());
@@ -32,10 +38,6 @@ final class JsonString implements JsonRepresentedObject, ConfigurationSerializab
         HashMap<String, Object> theSingleValue = new HashMap<String, Object>();
         theSingleValue.put("stringValue", _value);
         return theSingleValue;
-    }
-
-    public static JsonString deserialize(Map<String, Object> map) {
-        return new JsonString(map.get("stringValue").toString());
     }
 
     @Override

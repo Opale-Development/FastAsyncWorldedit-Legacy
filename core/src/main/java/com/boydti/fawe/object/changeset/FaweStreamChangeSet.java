@@ -17,6 +17,7 @@ import com.sk89q.worldedit.extent.inventory.BlockBag;
 import com.sk89q.worldedit.history.change.Change;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +29,17 @@ import java.util.NoSuchElementException;
 public abstract class FaweStreamChangeSet extends FaweChangeSet {
 
     public static final int HEADER_SIZE = 9;
-    private int mode;
     private final int compression;
-
+    public int entityCreateSize;
+    public int entityRemoveSize;
+    public int tileCreateSize;
+    public int tileRemoveSize;
+    private int mode;
     private FaweStreamIdDelegate idDel;
     private FaweStreamPositionDelegate posDel;
+    private int blockSize;
+    private int originX;
+    private int originZ;
 
     public FaweStreamChangeSet(World world) {
         this(world, Settings.IMP.HISTORY.COMPRESSION_LEVEL, Settings.IMP.HISTORY.STORE_REDO, Settings.IMP.HISTORY.SMALL_EDITS);
@@ -66,24 +73,6 @@ public abstract class FaweStreamChangeSet extends FaweChangeSet {
         } else {
             mode = 2;
         }
-    }
-
-    public interface FaweStreamPositionDelegate {
-        void write(OutputStream out, int x, int y, int z) throws IOException;
-
-        int readX(FaweInputStream in) throws IOException;
-
-        int readY(FaweInputStream in) throws IOException;
-
-        int readZ(FaweInputStream in) throws IOException;
-    }
-
-    public interface FaweStreamIdDelegate {
-        void writeChange(OutputStream out, int from, int to) throws IOException;
-
-        void readCombined(FaweInputStream in, MutableBlockChange change, boolean dir) throws IOException;
-
-        void readCombined(FaweInputStream in, MutableFullBlockChange change, boolean dir) throws IOException;
     }
 
     private void setupStreamDelegates(int mode) {
@@ -147,6 +136,7 @@ public abstract class FaweStreamChangeSet extends FaweChangeSet {
         if (mode == 1 || mode == 4) { // small
             posDel = new FaweStreamPositionDelegate() {
                 int lx, ly, lz;
+                byte[] buffer = new byte[4];
 
                 @Override
                 public void write(OutputStream out, int x, int y, int z) throws IOException {
@@ -164,8 +154,6 @@ public abstract class FaweStreamChangeSet extends FaweChangeSet {
                     out.write(b3);
                     out.write(b4);
                 }
-
-                byte[] buffer = new byte[4];
 
                 @Override
                 public int readX(FaweInputStream in) throws IOException {
@@ -297,15 +285,6 @@ public abstract class FaweStreamChangeSet extends FaweChangeSet {
     public abstract NBTInputStream getTileCreateIS() throws IOException;
 
     public abstract NBTInputStream getTileRemoveIS() throws IOException;
-
-    private int blockSize;
-    public int entityCreateSize;
-    public int entityRemoveSize;
-    public int tileCreateSize;
-    public int tileRemoveSize;
-
-    private int originX;
-    private int originZ;
 
     public void setOrigin(int x, int z) {
         originX = x;
@@ -735,5 +714,23 @@ public abstract class FaweStreamChangeSet extends FaweChangeSet {
     @Override
     public Iterator<Change> forwardIterator() {
         return getIterator(true);
+    }
+
+    public interface FaweStreamPositionDelegate {
+        void write(OutputStream out, int x, int y, int z) throws IOException;
+
+        int readX(FaweInputStream in) throws IOException;
+
+        int readY(FaweInputStream in) throws IOException;
+
+        int readZ(FaweInputStream in) throws IOException;
+    }
+
+    public interface FaweStreamIdDelegate {
+        void writeChange(OutputStream out, int from, int to) throws IOException;
+
+        void readCombined(FaweInputStream in, MutableBlockChange change, boolean dir) throws IOException;
+
+        void readCombined(FaweInputStream in, MutableFullBlockChange change, boolean dir) throws IOException;
     }
 }

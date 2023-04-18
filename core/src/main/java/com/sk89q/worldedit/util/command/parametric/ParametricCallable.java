@@ -36,6 +36,7 @@ import com.sk89q.worldedit.util.command.Parameter;
 import com.sk89q.worldedit.util.command.SimpleDescription;
 import com.sk89q.worldedit.util.command.UnconsumedParameterException;
 import com.sk89q.worldedit.util.command.binding.Switch;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -181,6 +182,30 @@ public class ParametricCallable extends AParametricCallable {
         // Get permissions annotation
         commandPermissions = method.getAnnotation(CommandPermissions.class);
         this.definition = definition;
+    }
+
+    /**
+     * Generate a name for a parameter.
+     *
+     * @param type       the type
+     * @param classifier the classifier
+     * @param index      the index
+     * @return a generated name
+     */
+    public static String generateName(Type type, Annotation classifier, int index) {
+        if (classifier != null) {
+            return classifier.annotationType().getSimpleName().toLowerCase();
+        } else {
+            if (type instanceof Class<?>) {
+                return ((Class<?>) type).getSimpleName().toLowerCase();
+            } else {
+                return "unknown" + index;
+            }
+        }
+    }
+
+    public static Class<ParametricCallable> inject() {
+        return ParametricCallable.class;
     }
 
     @Override
@@ -338,30 +363,5 @@ public class ParametricCallable extends AParametricCallable {
     @Override
     public String toString() {
         return method.toGenericString();
-    }
-
-    /**
-     * Generate a name for a parameter.
-     *
-     * @param type       the type
-     * @param classifier the classifier
-     * @param index      the index
-     * @return a generated name
-     */
-    public static String generateName(Type type, Annotation classifier, int index) {
-        if (classifier != null) {
-            return classifier.annotationType().getSimpleName().toLowerCase();
-        } else {
-            if (type instanceof Class<?>) {
-                return ((Class<?>) type).getSimpleName().toLowerCase();
-            } else {
-                return "unknown" + index;
-            }
-        }
-    }
-
-
-    public static Class<ParametricCallable> inject() {
-        return ParametricCallable.class;
     }
 }

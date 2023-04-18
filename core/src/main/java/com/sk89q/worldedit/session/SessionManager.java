@@ -32,6 +32,7 @@ import com.sk89q.worldedit.session.storage.SessionStore;
 import com.sk89q.worldedit.session.storage.VoidStore;
 import com.sk89q.worldedit.util.concurrency.EvenMoreExecutors;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.Reference;
@@ -57,11 +58,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SessionManager {
 
-    @Deprecated
-    public static int EXPIRATION_GRACE = 600000;
-
     private static final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(EvenMoreExecutors.newBoundedCachedThreadPool(0, 1, 5));
     private static final Logger log = Logger.getLogger(SessionManager.class.getCanonicalName());
+    @Deprecated
+    public static int EXPIRATION_GRACE = 600000;
     private final Timer timer = new Timer();
     private final WorldEdit worldEdit;
     private final Map<UUID, SessionHolder> sessions = new ConcurrentHashMap<>(8, 0.9f, 1);
@@ -80,6 +80,10 @@ public class SessionManager {
         this.worldEdit = worldEdit;
 
         worldEdit.getEventBus().register(this);
+    }
+
+    public static Class<?> inject() {
+        return SessionManager.class;
     }
 
     /**
@@ -253,7 +257,6 @@ public class SessionManager {
         return getKey(owner.getSessionKey());
     }
 
-
     /**
      * Get the key to use in the map for a {@code SessionKey}.
      *
@@ -322,10 +325,6 @@ public class SessionManager {
             this.key = key;
             this.session = session;
         }
-    }
-
-    public static Class<?> inject() {
-        return SessionManager.class;
     }
 
 

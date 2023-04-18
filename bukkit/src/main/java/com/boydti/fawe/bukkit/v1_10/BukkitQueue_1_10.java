@@ -21,6 +21,7 @@ import com.sk89q.jnbt.Tag;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.LongAdder;
+
 import net.minecraft.server.v1_10_R1.BiomeBase;
 import net.minecraft.server.v1_10_R1.BiomeCache;
 import net.minecraft.server.v1_10_R1.Block;
@@ -82,6 +84,7 @@ import org.bukkit.generator.ChunkGenerator;
 
 public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R1.Chunk, ChunkSection[], ChunkSection> {
 
+    public static final IBlockData[] IBD_CACHE = new IBlockData[Character.MAX_VALUE + 1];
     protected static IBlockData air;
     protected static Field fieldBits;
     protected static Field fieldPalette;
@@ -99,8 +102,6 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
     protected static Field fieldGenLayer2;
     protected static MutableGenLayer genLayer;
     protected static ChunkSection emptySection;
-
-    public static final IBlockData[] IBD_CACHE = new IBlockData[Character.MAX_VALUE + 1];
 
     static {
         try {
@@ -122,8 +123,8 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
             fieldBiomeCache.setAccessible(true);
             fieldBiomes2 = WorldChunkManager.class.getDeclaredField("d");
             fieldBiomes2.setAccessible(true);
-            fieldGenLayer1 = WorldChunkManager.class.getDeclaredField("a") ;
-            fieldGenLayer2 = WorldChunkManager.class.getDeclaredField("b") ;
+            fieldGenLayer1 = WorldChunkManager.class.getDeclaredField("a");
+            fieldGenLayer2 = WorldChunkManager.class.getDeclaredField("b");
             fieldGenLayer1.setAccessible(true);
             fieldGenLayer2.setAccessible(true);
 
@@ -145,12 +146,16 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
             for (int i = 0; i < IBD_CACHE.length; i++) {
                 try {
                     IBD_CACHE[i] = Block.getById(i >> 4).fromLegacyData(i & 0xF);
-                } catch (Throwable ignore) {}
+                } catch (Throwable ignore) {
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
+
+    protected WorldServer nmsWorld;
+    protected BlockPosition.MutableBlockPosition pos = new BlockPosition.MutableBlockPosition(0, 0, 0);
 
     public BukkitQueue_1_10(final com.sk89q.worldedit.world.World world) {
         super(world);
@@ -337,7 +342,7 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
             worldSettings = null;
         }
         worlddata.checkName(name);
-        final WorldServer internal = (WorldServer)new WorldServer(console, sdm, worlddata, dimension, console.methodProfiler, creator.environment(), generator).b();
+        final WorldServer internal = (WorldServer) new WorldServer(console, sdm, worlddata, dimension, console.methodProfiler, creator.environment(), generator).b();
         startSet(true); // Temporarily allow async chunk load since the world isn't added yet
         if (worldSettings != null) {
             internal.a(worldSettings);
@@ -574,7 +579,8 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
             });
             packet.a(buffer);
             for (int i = 0; i < players.length; i++) {
-                if (watchingArr[i]) ((CraftPlayer) ((BukkitPlayer) players[i]).parent).getHandle().playerConnection.sendPacket(packet);
+                if (watchingArr[i])
+                    ((CraftPlayer) ((BukkitPlayer) players[i]).parent).getHandle().playerConnection.sendPacket(packet);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -644,7 +650,8 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
                     return true;
                 }
             }
-        } catch (Throwable ignore) {}
+        } catch (Throwable ignore) {
+        }
         return false;
     }
 
@@ -698,8 +705,6 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
         pos.c(x, y, z);
         nmsWorld.w(pos);
     }
-
-    protected WorldServer nmsWorld;
 
     @Override
     public World getImpWorld() {
@@ -811,8 +816,6 @@ public class BukkitQueue_1_10 extends BukkitQueue_0<net.minecraft.server.v1_10_R
         }
         return previous;
     }
-
-    protected BlockPosition.MutableBlockPosition pos = new BlockPosition.MutableBlockPosition(0, 0, 0);
 
     @Override
     public CompoundTag getTileEntity(net.minecraft.server.v1_10_R1.Chunk chunk, int x, int y, int z) {

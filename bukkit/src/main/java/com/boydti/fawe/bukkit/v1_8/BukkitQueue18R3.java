@@ -15,6 +15,7 @@ import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.jnbt.StringTag;
 import com.sk89q.jnbt.Tag;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import net.minecraft.server.v1_8_R3.Block;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Chunk;
@@ -100,8 +102,8 @@ public class BukkitQueue18R3 extends BukkitQueue_0<net.minecraft.server.v1_8_R3.
             fieldBiomeCache.setAccessible(true);
             fieldBiomes2 = net.minecraft.server.v1_8_R3.WorldChunkManager.class.getDeclaredField("e");
             fieldBiomes2.setAccessible(true);
-            fieldGenLayer1 = net.minecraft.server.v1_8_R3.WorldChunkManager.class.getDeclaredField("b") ;
-            fieldGenLayer2 = net.minecraft.server.v1_8_R3.WorldChunkManager.class.getDeclaredField("c") ;
+            fieldGenLayer1 = net.minecraft.server.v1_8_R3.WorldChunkManager.class.getDeclaredField("b");
+            fieldGenLayer2 = net.minecraft.server.v1_8_R3.WorldChunkManager.class.getDeclaredField("c");
             fieldGenLayer1.setAccessible(true);
             fieldGenLayer2.setAccessible(true);
         } catch (Throwable e) {
@@ -110,8 +112,12 @@ public class BukkitQueue18R3 extends BukkitQueue_0<net.minecraft.server.v1_8_R3.
         try {
             isDirty = ChunkSection.class.getDeclaredField("isDirty");
             isDirty.setAccessible(true);
-        } catch (Throwable ignore) {}
+        } catch (Throwable ignore) {
+        }
     }
+
+    private BlockPosition.MutableBlockPosition pos = new BlockPosition.MutableBlockPosition(0, 0, 0);
+    private WorldServer nmsWorld;
 
     public BukkitQueue18R3(final com.sk89q.worldedit.world.World world) {
         super(world);
@@ -436,8 +442,6 @@ public class BukkitQueue18R3 extends BukkitQueue_0<net.minecraft.server.v1_8_R3.
         }
     }
 
-    private BlockPosition.MutableBlockPosition pos = new BlockPosition.MutableBlockPosition(0, 0, 0);
-
     @Override
     public CompoundTag getTileEntity(net.minecraft.server.v1_8_R3.Chunk chunk, int x, int y, int z) {
         Map<BlockPosition, TileEntity> tiles = chunk.getTileEntities();
@@ -445,7 +449,6 @@ public class BukkitQueue18R3 extends BukkitQueue_0<net.minecraft.server.v1_8_R3.
         TileEntity tile = tiles.get(pos);
         return tile != null ? getTag(tile) : null;
     }
-
 
     public void setCount(int tickingBlockCount, int nonEmptyBlockCount, ChunkSection section) throws NoSuchFieldException, IllegalAccessException {
         fieldTickingBlockCount.set(section, tickingBlockCount);
@@ -612,7 +615,7 @@ public class BukkitQueue18R3 extends BukkitQueue_0<net.minecraft.server.v1_8_R3.
             worldSettings = null;
         }
         worlddata.checkName(name);
-        final WorldServer internal = (WorldServer)new WorldServer(console, sdm, worlddata, dimension, console.methodProfiler, creator.environment(), generator).b();
+        final WorldServer internal = (WorldServer) new WorldServer(console, sdm, worlddata, dimension, console.methodProfiler, creator.environment(), generator).b();
         startSet(true); // Temporarily allow async chunk load since the world isn't added yet
         if (worldSettings != null) {
             internal.a(worldSettings);
@@ -643,8 +646,6 @@ public class BukkitQueue18R3 extends BukkitQueue_0<net.minecraft.server.v1_8_R3.
         pos.c(x, y, z);
         nmsWorld.x(pos);
     }
-
-    private WorldServer nmsWorld;
 
     @Override
     public World getImpWorld() {

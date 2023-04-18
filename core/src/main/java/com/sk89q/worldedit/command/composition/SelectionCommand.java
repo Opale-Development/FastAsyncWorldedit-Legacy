@@ -52,6 +52,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.command.argument.CommandArgs;
 import com.sk89q.worldedit.util.command.composition.CommandExecutor;
 import com.sk89q.worldedit.util.command.composition.SimpleCommand;
+
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -69,6 +70,10 @@ public class SelectionCommand extends SimpleCommand<Operation> {
         this.delegate = delegate;
         this.permission = permission;
         addParameter(delegate);
+    }
+
+    public static Class<?> inject() {
+        return SelectionCommand.class;
     }
 
     @Override
@@ -184,10 +189,6 @@ public class SelectionCommand extends SimpleCommand<Operation> {
     @Override
     public boolean testPermission0(CommandLocals locals) {
         return locals.get(Actor.class).hasPermission(permission);
-    }
-
-    public static Class<?> inject() {
-        return SelectionCommand.class;
     }
 
 }

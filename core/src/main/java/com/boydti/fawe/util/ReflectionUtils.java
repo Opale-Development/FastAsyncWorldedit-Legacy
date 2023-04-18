@@ -20,6 +20,8 @@ import sun.reflect.ReflectionFactory;
  */
 @SuppressWarnings({"UnusedDeclaration", "rawtypes"})
 public class ReflectionUtils {
+    private static Class<?> UNMODIFIABLE_MAP = Collections.unmodifiableMap(Collections.EMPTY_MAP).getClass();
+
     public static <T> T as(Class<T> t, Object o) {
         return t.isInstance(o) ? t.cast(o) : null;
     }
@@ -32,7 +34,6 @@ public class ReflectionUtils {
             return ReflectionUtils9.addEnum(enumType, enumName);
         }
     }
-
 
     public static <T extends Enum<?>> T addEnum(Class<T> enumType, String enumName, Class<?>[] additionalTypes, Object[] additionalValues) {
 
@@ -171,8 +172,6 @@ public class ReflectionUtils {
         blankField(enumClass, "enumConstantDirectory"); // Sun (Oracle?!?) JDK 1.5/6
         blankField(enumClass, "enumConstants"); // IBM JDK
     }
-
-    private static Class<?> UNMODIFIABLE_MAP = Collections.unmodifiableMap(Collections.EMPTY_MAP).getClass();
 
     public static <T, V> Map<T, V> getMap(Map<T, V> map) {
         try {

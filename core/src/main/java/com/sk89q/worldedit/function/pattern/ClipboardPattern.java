@@ -33,6 +33,10 @@ public class ClipboardPattern extends AbstractPattern {
         this.min = clipboard.getMinimumPoint();
     }
 
+    public static Class<?> inject() {
+        return ClipboardPattern.class;
+    }
+
     @Override
     public BaseBlock apply(Vector position) {
         int xp = position.getBlockX() % sx;
@@ -45,9 +49,5 @@ public class ClipboardPattern extends AbstractPattern {
         mutable.mutY((min.getY() + yp));
         mutable.mutZ((min.getZ() + zp));
         return clipboard.getBlock(mutable);
-    }
-
-    public static Class<?> inject() {
-        return ClipboardPattern.class;
     }
 }

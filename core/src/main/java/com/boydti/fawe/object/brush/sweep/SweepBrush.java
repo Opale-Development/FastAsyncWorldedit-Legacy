@@ -18,18 +18,18 @@ import com.sk89q.worldedit.math.interpolation.KochanekBartelsInterpolation;
 import com.sk89q.worldedit.math.interpolation.Node;
 import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SweepBrush implements Brush, ResettableTool {
-    private List<Vector> positions;
-    private Vector position;
-    private int copies;
-
     private static final double tension = 0D;
     private static final double bias = 0D;
     private static final double continuity = 0D;
+    private List<Vector> positions;
+    private Vector position;
+    private int copies;
 
     public SweepBrush(int copies) {
         this.positions = new ArrayList<>();
@@ -111,7 +111,7 @@ public class SweepBrush implements Brush, ResettableTool {
                 break;
             }
             default: {
-                for (double pos = 0D; pos <= 1D; pos += 1D / (copies -  1)) {
+                for (double pos = 0D; pos <= 1D; pos += 1D / (copies - 1)) {
                     spline.pastePosition(pos);
                 }
                 break;

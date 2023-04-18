@@ -15,6 +15,7 @@ import com.intellectualcrafters.plot.object.Plot;
 import com.intellectualcrafters.plot.object.PlotArea;
 import com.intellectualcrafters.plot.object.PlotPlayer;
 import com.intellectualcrafters.plot.util.expiry.ExpireManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class PlotTrim {
     private final File originalRoot;
     private byte[][] ids;
     private boolean deleteUnowned = true;
+    private Map<Long, Object> chunks = new ConcurrentHashMap<>();
+    private Object PRESENT = new Object();
+    private int count = 0;
 
     public PlotTrim(PlotPlayer player, PlotArea area, String worldName, boolean deleteUnowned) {
         FaweQueue tmpQueue = SetQueue.IMP.getNewQueue(worldName, true, false);
@@ -57,9 +61,6 @@ public class PlotTrim {
     public void setChunk(int x, int z) {
         this.ids = ((MCAChunk) originalQueue.getFaweChunk(x, z)).ids;
     }
-
-    private Map<Long, Object> chunks = new ConcurrentHashMap<>();
-    private Object PRESENT = new Object();
 
     private void removeChunks(Plot plot) {
         Location pos1 = plot.getBottom();
@@ -179,8 +180,6 @@ public class PlotTrim {
         });
         player.sendMessage("Done!");
     }
-
-    private int count = 0;
 
     private boolean isEqual(byte[] a, byte[] b) {
         if (a == b) {

@@ -21,21 +21,6 @@ public abstract class AParametricCallable implements CommandCallable {
 //    private String permission;
 //    private Command command;
 
-    public abstract ParameterData[] getParameters();
-    public abstract Set<Character> getValueFlags();
-    public abstract Set<Character> getLegacyFlags();
-    public abstract SimpleDescription getDescription();
-    public abstract String[] getPermissions();
-    public abstract ParametricBuilder getBuilder();
-    public abstract boolean anyFlags();
-    public abstract Command getCommand();
-    public Command getDefinition() {
-        return getCommand();
-    }
-    public abstract String getGroup();
-    @Override
-    public abstract String toString();
-
     /**
      * Get the right {@link ArgumentStack}.
      *
@@ -57,6 +42,31 @@ public abstract class AParametricCallable implements CommandCallable {
 
         return existing;
     }
+
+    public abstract ParameterData[] getParameters();
+
+    public abstract Set<Character> getValueFlags();
+
+    public abstract Set<Character> getLegacyFlags();
+
+    public abstract SimpleDescription getDescription();
+
+    public abstract String[] getPermissions();
+
+    public abstract ParametricBuilder getBuilder();
+
+    public abstract boolean anyFlags();
+
+    public abstract Command getCommand();
+
+    public Command getDefinition() {
+        return getCommand();
+    }
+
+    public abstract String getGroup();
+
+    @Override
+    public abstract String toString();
 
     /**
      * Get whether a parameter is allowed to consume arguments.
@@ -228,7 +238,7 @@ public abstract class AParametricCallable implements CommandCallable {
         int minConsumedI = 0; // The minimum argument that has been consumed
         // Collect parameters
         try {
-            for (;maxConsumedI < parameters.length; maxConsumedI++) {
+            for (; maxConsumedI < parameters.length; maxConsumedI++) {
                 parameter = parameters[maxConsumedI];
                 if (parameter.getBinding().getBehavior(parameter) != BindingBehavior.PROVIDES) {
                     // Parse the user input into a method argument
@@ -239,7 +249,8 @@ public abstract class AParametricCallable implements CommandCallable {
                         parameter.getBinding().bind(parameter, usedArguments, false);
                         minConsumedI = maxConsumedI + 1;
                     } catch (Throwable e) {
-                        while (e.getCause() != null && !(e instanceof ParameterException || e instanceof InvocationTargetException)) e = e.getCause();
+                        while (e.getCause() != null && !(e instanceof ParameterException || e instanceof InvocationTargetException))
+                            e = e.getCause();
                         consumed = usedArguments.reset();
                         // Not optional? Then we can't execute this command
                         if (!parameter.isOptional()) {
@@ -249,7 +260,8 @@ public abstract class AParametricCallable implements CommandCallable {
                     }
                 }
             }
-            if (minConsumedI >= maxConsumedI && (parameter == null || parameter.getType() == CommandContext.class)) checkUnconsumed(scoped);
+            if (minConsumedI >= maxConsumedI && (parameter == null || parameter.getType() == CommandContext.class))
+                checkUnconsumed(scoped);
         } catch (MissingParameterException ignore) {
         } catch (UnconsumedParameterException e) {
             suggestions.add(BBC.color("&cToo many parameters! Unused parameters: " + e.getUnconsumed()));

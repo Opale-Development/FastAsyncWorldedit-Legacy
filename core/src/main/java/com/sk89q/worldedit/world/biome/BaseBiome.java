@@ -52,6 +52,10 @@ public class BaseBiome {
         this.id = biome.getId();
     }
 
+    public static Class<?> inject() {
+        return BaseBiome.class;
+    }
+
     /**
      * Get the biome ID.
      *
@@ -83,10 +87,5 @@ public class BaseBiome {
     @Override
     public int hashCode() {
         return id;
-    }
-
-
-    public static Class<?> inject() {
-        return BaseBiome.class;
     }
 }

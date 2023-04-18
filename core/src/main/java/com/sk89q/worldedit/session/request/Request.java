@@ -26,6 +26,7 @@ import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.util.command.parametric.ParametricCallable;
 import com.sk89q.worldedit.world.World;
+
 import javax.annotation.Nullable;
 
 /**
@@ -55,6 +56,26 @@ public final class Request {
     }
 
     /**
+     * Get the current request, which is specific to the current thread.
+     *
+     * @return the current request
+     */
+    public static Request request() {
+        return threadLocal.get();
+    }
+
+    /**
+     * Reset the current request and clear all fields.
+     */
+    public static void reset() {
+        threadLocal.remove();
+    }
+
+    public static Class<Request> inject() {
+        return Request.class;
+    }
+
+    /**
      * Get the request world.
      *
      * @return the world, which may be null
@@ -74,10 +95,6 @@ public final class Request {
         this.world = world;
     }
 
-    public void setExtent(@Nullable Extent extent) {
-        this.extent = extent;
-    }
-
     public
     @Nullable
     Extent getExtent() {
@@ -85,6 +102,10 @@ public final class Request {
         if (editSession != null) return editSession;
         if (world != null) return world;
         return null;
+    }
+
+    public void setExtent(@Nullable Extent extent) {
+        this.extent = extent;
     }
 
     @Nullable
@@ -134,26 +155,5 @@ public final class Request {
      */
     public void setEditSession(@Nullable EditSession editSession) {
         this.editSession = editSession;
-    }
-
-    /**
-     * Get the current request, which is specific to the current thread.
-     *
-     * @return the current request
-     */
-    public static Request request() {
-        return threadLocal.get();
-    }
-
-    /**
-     * Reset the current request and clear all fields.
-     */
-    public static void reset() {
-        threadLocal.remove();
-    }
-
-
-    public static Class<Request> inject() {
-        return Request.class;
     }
 }

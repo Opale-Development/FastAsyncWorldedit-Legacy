@@ -6,8 +6,10 @@ import com.boydti.fawe.object.FawePlayer;
 import com.boydti.fawe.util.chat.ChatManager;
 import com.boydti.fawe.util.chat.Message;
 import com.boydti.fawe.wrappers.FakePlayer;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.ChatColor;
 
 public class BukkitChatManager implements ChatManager<FancyMessage> {

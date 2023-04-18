@@ -20,6 +20,7 @@
 package com.sk89q.worldedit.function.mask;
 
 import com.sk89q.worldedit.Vector;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,14 +56,6 @@ public class MaskIntersection extends AbstractMask implements Serializable {
         formArray();
     }
 
-    private void formArray() {
-        if (masks.isEmpty()) {
-            masksArray = new Mask[]{Masks.alwaysFalse()};
-        } else {
-            masksArray = masks.toArray(new Mask[masks.size()]);
-        }
-    }
-
     /**
      * Create a new intersection.
      *
@@ -70,6 +63,14 @@ public class MaskIntersection extends AbstractMask implements Serializable {
      */
     public MaskIntersection(Mask... mask) {
         this(Arrays.asList(checkNotNull(mask)));
+    }
+
+    private void formArray() {
+        if (masks.isEmpty()) {
+            masksArray = new Mask[]{Masks.alwaysFalse()};
+        } else {
+            masksArray = masks.toArray(new Mask[masks.size()]);
+        }
     }
 
     /**

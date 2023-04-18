@@ -66,6 +66,22 @@ public class FlattenedClipboardTransform {
     }
 
     /**
+     * Create a new instance to bake the transform with.
+     *
+     * @param original  the original clipboard
+     * @param transform the transform
+     * @param worldData the world data instance
+     * @return a builder
+     */
+    public static FlattenedClipboardTransform transform(Clipboard original, Transform transform, WorldData worldData) {
+        return new FlattenedClipboardTransform(original, transform, worldData);
+    }
+
+    public static Class<?> inject() {
+        return FlattenedClipboardTransform.class;
+    }
+
+    /**
      * Get the transformed region.
      *
      * @return the transformed region
@@ -125,21 +141,5 @@ public class FlattenedClipboardTransform {
         ForwardExtentCopy copy = new ForwardExtentCopy(extent, original.getRegion(), original.getOrigin(), target, original.getOrigin());
         copy.setTransform(transform);
         return copy;
-    }
-
-    /**
-     * Create a new instance to bake the transform with.
-     *
-     * @param original  the original clipboard
-     * @param transform the transform
-     * @param worldData the world data instance
-     * @return a builder
-     */
-    public static FlattenedClipboardTransform transform(Clipboard original, Transform transform, WorldData worldData) {
-        return new FlattenedClipboardTransform(original, transform, worldData);
-    }
-
-    public static Class<?> inject() {
-        return FlattenedClipboardTransform.class;
     }
 }

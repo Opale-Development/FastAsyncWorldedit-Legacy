@@ -29,6 +29,7 @@ import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.biome.BaseBiome;
 import com.sk89q.worldedit.world.registry.WorldData;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -230,13 +231,13 @@ public interface IDelegateFaweQueue extends FaweQueue {
     }
 
     @Override
-    default void setChangeTask(RunnableVal2<FaweChunk, FaweChunk> changeTask) {
-        getQueue().setChangeTask(changeTask);
+    default RunnableVal2<FaweChunk, FaweChunk> getChangeTask() {
+        return getQueue().getChangeTask();
     }
 
     @Override
-    default RunnableVal2<FaweChunk, FaweChunk> getChangeTask() {
-        return getQueue().getChangeTask();
+    default void setChangeTask(RunnableVal2<FaweChunk, FaweChunk> changeTask) {
+        getQueue().setChangeTask(changeTask);
     }
 
     @Override

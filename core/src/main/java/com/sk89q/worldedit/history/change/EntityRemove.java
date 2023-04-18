@@ -50,6 +50,10 @@ public class EntityRemove implements Change {
         this.state = state;
     }
 
+    public static Class<?> inject() {
+        return EntityRemove.class;
+    }
+
     @Override
     public void undo(UndoContext context) throws WorldEditException {
         entity = checkNotNull(context.getExtent()).createEntity(location, state);
@@ -61,9 +65,5 @@ public class EntityRemove implements Change {
             entity.remove();
             entity = null;
         }
-    }
-
-    public static Class<?> inject() {
-        return EntityRemove.class;
     }
 }

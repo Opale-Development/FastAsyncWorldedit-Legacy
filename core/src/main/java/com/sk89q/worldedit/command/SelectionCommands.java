@@ -63,6 +63,7 @@ import com.sk89q.worldedit.util.formatting.StyledFragment;
 import com.sk89q.worldedit.util.formatting.component.CommandListBox;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.storage.ChunkStore;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -85,6 +86,10 @@ public class SelectionCommands {
 
     public SelectionCommands(WorldEdit we) {
         this.we = we;
+    }
+
+    public static Class<?> inject() {
+        return SelectionCommands.class;
     }
 
     @Command(
@@ -616,7 +621,6 @@ public class SelectionCommands {
             }
 
 
-
 //            player.print(BBC.getPrefix() + "Cuboid dimensions (max - min): " + size);
 //            player.print(BBC.getPrefix() + "Offset: " + origin);
 //            player.print(BBC.getPrefix() + "Cuboid distance: " + size.distance(Vector.ONE));
@@ -641,7 +645,6 @@ public class SelectionCommands {
         player.print(BBC.getPrefix() + "Cuboid distance: " + region.getMaximumPoint().distance(region.getMinimumPoint()));
         player.print(BBC.getPrefix() + "# of blocks: " + region.getArea());
     }
-
 
     @Command(
             aliases = {"/count"},
@@ -843,9 +846,5 @@ public class SelectionCommands {
 
         session.setRegionSelector(world, selector);
         session.dispatchCUISelection(player);
-    }
-
-    public static Class<?> inject() {
-        return SelectionCommands.class;
     }
 }

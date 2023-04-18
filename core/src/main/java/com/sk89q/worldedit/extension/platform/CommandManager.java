@@ -96,20 +96,17 @@ public final class CommandManager {
     private static final Logger commandLog = Logger.getLogger(CommandManager.class.getCanonicalName() + ".CommandLog");
     private static final Pattern numberFormatExceptionPattern = Pattern.compile("^For input string: \"(.*)\"$");
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
+    private static CommandManager INSTANCE;
     private final WorldEdit worldEdit;
     private final PlatformManager platformManager;
-    private volatile Dispatcher dispatcher;
-    private volatile Platform platform;
     private final DynamicStreamHandler dynamicHandler = new DynamicStreamHandler();
     private final ExceptionConverter exceptionConverter;
+    private volatile Dispatcher dispatcher;
+    private volatile Platform platform;
     private boolean tabCompleteDisabled = false;
-
     private ParametricBuilder builder;
     private Map<Object, String[]> methodMap;
     private Map<CommandCallable, String[][]> commandMap;
-
-    private static CommandManager INSTANCE;
 
     /**
      * Create a new instance.
@@ -150,11 +147,24 @@ public final class CommandManager {
             Class.forName("com.intellectualcrafters.plot.PS");
             CFICommand cfi = new CFICommand(worldEdit, builder);
             registerCommands(cfi);
-        } catch (ClassNotFoundException e) {}
+        } catch (ClassNotFoundException e) {
+        }
+    }
+
+    public static CommandManager getInstance() {
+        return INSTANCE;
+    }
+
+    public static Logger getLogger() {
+        return commandLog;
+    }
+
+    public static Class<CommandManager> inject() {
+        return CommandManager.class;
     }
 
     /**
-    /**
+     * /**
      * Register all the methods in the class as commands<br>
      * - You should try to register commands during startup
      *
@@ -219,7 +229,7 @@ public final class CommandManager {
             }
             platform.registerCommands(dispatcher);
         } else {
-            commandMap.putIfAbsent(callable, new String[][] {aliases, command.aliases()});
+            commandMap.putIfAbsent(callable, new String[][]{aliases, command.aliases()});
         }
     }
 
@@ -295,10 +305,6 @@ public final class CommandManager {
         if (platform != null) {
             platform.registerCommands(dispatcher);
         }
-    }
-
-    public static CommandManager getInstance() {
-        return INSTANCE;
     }
 
     public ExceptionConverter getExceptionConverter() {
@@ -588,14 +594,5 @@ public final class CommandManager {
      */
     public Dispatcher getDispatcher() {
         return dispatcher;
-    }
-
-    public static Logger getLogger() {
-        return commandLog;
-    }
-
-
-    public static Class<CommandManager> inject() {
-        return CommandManager.class;
     }
 }

@@ -41,6 +41,10 @@ public class ParameterData extends SimpleParameter {
     private Annotation[] modifiers;
     private Type type;
 
+    public static Class<?> inject() {
+        return ParameterData.class;
+    }
+
     /**
      * Get the binding associated with this parameter.
      *
@@ -196,9 +200,5 @@ public class ParameterData extends SimpleParameter {
                             "\nfor parameter #" + parameterIndex + " of \n" +
                             method.get());
         }
-    }
-
-    public static Class<?> inject() {
-        return ParameterData.class;
     }
 }

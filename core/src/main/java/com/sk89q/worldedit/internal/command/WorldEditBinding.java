@@ -72,14 +72,18 @@ public class WorldEditBinding extends BindingHelper {
         this.worldEdit = worldEdit;
     }
 
+    public static Class<?> inject() {
+        return WorldEditBinding.class;
+    }
+
     /**
      * Gets a selection from a {@link ArgumentStack}.
      *
-     * @param context the context
+     * @param context   the context
      * @param selection the annotation
      * @return a selection
      * @throws IncompleteRegionException if no selection is available
-     * @throws ParameterException on other error
+     * @throws ParameterException        on other error
      */
     @BindingMatch(classifier = Selection.class,
             type = Region.class,
@@ -267,10 +271,10 @@ public class WorldEditBinding extends BindingHelper {
     /**
      * Get a direction from the player.
      *
-     * @param context the context
+     * @param context   the context
      * @param direction the direction annotation
      * @return a pattern
-     * @throws ParameterException on error
+     * @throws ParameterException        on error
      * @throws UnknownDirectionException on an unknown direction
      */
     @BindingMatch(classifier = Direction.class,
@@ -324,7 +328,7 @@ public class WorldEditBinding extends BindingHelper {
         String input = context.next();
         if (input != null) {
             if (MathMan.isInteger(input)) return new BaseBiome(Integer.parseInt(input));
-            
+
             Actor actor = context.getContext().getLocals().get(Actor.class);
             World world;
             if (actor instanceof Entity) {
@@ -352,10 +356,6 @@ public class WorldEditBinding extends BindingHelper {
                     "This command takes a 'default' biome if one is not set, except there is no particular " +
                             "biome that should be 'default', so the command should not be taking a default biome");
         }
-    }
-
-    public static Class<?> inject() {
-        return WorldEditBinding.class;
     }
 
 }

@@ -37,6 +37,7 @@ import com.sk89q.worldedit.world.snapshot.Snapshot;
 import com.sk89q.worldedit.world.snapshot.SnapshotRestore;
 import com.sk89q.worldedit.world.storage.ChunkStore;
 import com.sk89q.worldedit.world.storage.MissingWorldException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -53,6 +54,10 @@ public class SnapshotUtilCommands {
 
     public SnapshotUtilCommands(WorldEdit we) {
         this.we = we;
+    }
+
+    public static Class<SnapshotUtilCommands> inject() {
+        return SnapshotUtilCommands.class;
     }
 
     @Command(
@@ -156,9 +161,5 @@ public class SnapshotUtilCommands {
             } catch (IOException ignored) {
             }
         }
-    }
-
-    public static Class<SnapshotUtilCommands> inject() {
-        return SnapshotUtilCommands.class;
     }
 }

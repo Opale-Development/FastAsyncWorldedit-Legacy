@@ -6,6 +6,7 @@ import com.boydti.fawe.object.visitor.FaweChunkVisitor;
 import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.world.biome.BaseBiome;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public abstract class LazyFaweChunk<T extends FaweChunk> extends FaweChunk {
     protected T getCachedChunk() {
         return parent;
     }
-    
+
     public abstract T getChunk();
 
     @Override

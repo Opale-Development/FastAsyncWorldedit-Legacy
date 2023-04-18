@@ -2,6 +2,7 @@ package com.sk89q.worldedit.regions;
 
 import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.world.World;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;

@@ -29,6 +29,7 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.scripting.RhinoCraftScriptEngine;
+
 import java.io.File;
 
 
@@ -51,6 +52,10 @@ public class ScriptingCommands {
     public ScriptingCommands(final WorldEdit worldEdit) {
         checkNotNull(worldEdit);
         this.worldEdit = worldEdit;
+    }
+
+    public static Class<?> inject() {
+        return ScriptingCommands.class;
     }
 
     @Command(aliases = {"cs"}, usage = "<filename> [args...]", desc = "Execute a CraftScript", min = 1, max = -1)
@@ -107,9 +112,5 @@ public class ScriptingCommands {
         } catch (final WorldEditException ex) {
             player.printError("Error while executing CraftScript.");
         }
-    }
-
-    public static Class<?> inject() {
-        return ScriptingCommands.class;
     }
 }
